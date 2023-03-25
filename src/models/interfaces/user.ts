@@ -3,7 +3,7 @@ export enum UserType {
   CUSTOMER = "customer",
 }
 
-enum UserLoginProvider {
+export enum UserLoginProvider {
   EMAIL = "email",
   GOOGLE = "google",
   FACEBOOK = "facebook",

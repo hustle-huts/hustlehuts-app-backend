@@ -4,7 +4,6 @@
  * @param  - userDbModel: mongoose.Model<IUser & mongoose.Document>
  * @returns A function that returns a new instance of the class MongooseUserDb
  */
-import _ from "lodash";
 import mongoose from "mongoose";
 
 import IUser, { UserType } from "../models/interfaces/user";

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 type IController = (httpRequest: any) => any;
+
 export default function makeExpressCallback(controller: IController) {
   return (req: Request, res: Response, next: NextFunction) => {
     const httpRequest = {
@@ -18,17 +19,17 @@ export default function makeExpressCallback(controller: IController) {
       },
     };
     controller(httpRequest)
-      .then((httpResponse: any) => {
-        if (httpResponse.headers) {
-          res.set(httpResponse.headers);
+      .then((response: any) => {
+        if (response.headers) {
+          res.set(response.headers);
         }
         res.type("json");
-        res.status(httpResponse.statusCode).send(httpResponse.body);
+        res.status(response.statusCode).send(response.body);
       })
-      .catch((errorObject) => {
-        console.error("Error encountered: ", errorObject.body);
-        res.status(errorObject.statusCode).send(errorObject.body);
-        next(errorObject);
+      .catch((error: any) => {
+        console.error("Error encountered: ", error.body);
+        res.status(error.statusCode).send(error.body);
+        next(error);
       });
   };
 }
