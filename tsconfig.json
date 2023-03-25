@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "lib": ["es6"],
+    "lib": ["es6", "dom"],
     "allowJs": true,
     "outDir": "build",
     "strict": true,
@@ -10,10 +10,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts"
-  ]
+  "exclude": ["node_modules", "./node_modules", "./node_modules/*", "./node_modules/@types/node/index.d.ts"]
 }

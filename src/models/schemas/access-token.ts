@@ -5,11 +5,11 @@ const accessTokenSchema = new Schema(
   {
     token: { type: String, required: true },
     user_id: { type: String, required: true },
-    user_role: {
+    user_type: {
       type: String,
       required: true,
-      default: "user",
-      enum: ["user", "admin"],
+      default: "customer",
+      enum: ["customer", "cafe"],
     },
     revoked: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },

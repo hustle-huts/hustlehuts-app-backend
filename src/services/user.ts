@@ -41,12 +41,12 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     /**
-     * > Finds a user by email and role
+     * > Finds a user by email and type
      * @param  - `email` - the email of the user to find
      * @returns The user object
      */
-    async findByEmail({ email, role = UserType.CUSTOMER }: { email: string; role?: UserType }): Promise<IUser | null> {
-      const query_conditions = { email, role, deleted_at: undefined };
+    async findByEmail({ email, type = UserType.CUSTOMER }: { email: string; type?: UserType }): Promise<IUser | null> {
+      const query_conditions = { email, type, deleted_at: undefined };
       const existing = await userDbModel.findOne(query_conditions).lean();
       if (existing) {
         return existing;

@@ -26,7 +26,7 @@ export default function makeAccessTokenDb({
     }
 
     /**
-     * "Finds an access token by user id, user role, and whether or not it's revoked."
+     * "Finds an access token by user id, user type, and whether or not it's revoked."
      *
      * The function is async, so it returns a promise. The promise resolves to an object that implements
      * the IAccessToken interface
@@ -35,14 +35,14 @@ export default function makeAccessTokenDb({
      */
     async findOne({
       user_id,
-      user_role,
+      user_type,
       revoked,
     }: {
       user_id: string;
-      user_role?: string;
+      user_type?: string;
       revoked: boolean;
     }): Promise<IAccessToken | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_role, revoked }).lean();
+      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked }).lean();
       if (existing) {
         return {
           token: existing.token,
@@ -68,15 +68,15 @@ export default function makeAccessTokenDb({
     }
 
     /**
-     * "Find a valid access token for the given user id and role."
+     * "Find a valid access token for the given user id and type."
      *
      * The function is async, so it returns a promise. The promise resolves to a string, which is the
      * access token, or null if no valid token is found
      * @param  - `user_id` - the user id of the user you want to find a token for
      * @returns The token is being returned.
      */
-    async findValidToken({ user_id, user_role }: { user_id: string; user_role?: string }): Promise<string | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_role, revoked: false }).lean();
+    async findValidToken({ user_id, user_type }: { user_id: string; user_type?: string }): Promise<string | null> {
+      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked: false }).lean();
       if (existing) {
         return existing.token;
       }
@@ -128,15 +128,15 @@ export default function makeAccessTokenDb({
     async revoke(
       {
         user_id,
-        user_role,
+        user_type,
       }: {
         user_id: string;
-        user_role?: string;
+        user_type?: string;
       },
       options = { session: null },
     ): Promise<boolean | null> {
       const result = await accessTokenDbModel
-        .findOneAndUpdate({ user_id, user_role, revoked: false }, { revoked: true, updated_at: new Date() })
+        .findOneAndUpdate({ user_id, user_type, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
         .lean();
       return !!result && !!result.token;
