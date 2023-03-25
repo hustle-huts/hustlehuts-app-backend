@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
-const accessTokenSchema = new Schema(
+const accessTokenSchema = new mongoose.Schema(
   {
     token: { type: String, required: true },
     user_id: { type: String, required: true },
