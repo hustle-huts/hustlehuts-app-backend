@@ -17,7 +17,7 @@ const inProps = (key: string, props: string[]) => {
  * @param {string[]} props - string[]
  * @returns { a: 1, b: 2, c: 3 }
  */
-export const omit = (obj: { [index: string]: unknown }, props: string[]) => {
+export const omit = (obj: { [index: string]: any }, props: string[]) => {
   const newObj = {};
   Object.keys(obj).forEach((key) => {
     if (!inProps(key, props)) {
