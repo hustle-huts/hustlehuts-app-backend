@@ -4,12 +4,14 @@
  * @param  - cafeDbModel: mongoose.Model<ICafe & mongoose.Document>
  * @returns A function that returns a new instance of the class MongooseCafeDb
  */
+import _ from "lodash";
 import mongoose from "mongoose";
 
-import ICafe from "../models/interfaces/cafe";
+import { ICafeService } from "./interfaces/cafe";
+import ICafe, { PaginatedCafeResult } from "../models/interfaces/cafe";
 
 export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose.Model<ICafe & mongoose.Document> }) {
-  return new (class MongooseCafeDb {
+  return new (class MongooseCafeDb implements ICafeService {
     /**
      * It inserts a cafe into the database.
      * @param payload - This is the payload that will be inserted into the database.
@@ -65,6 +67,96 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
         return existing;
       }
       return [];
+    }
+
+    /**
+     * It returns a paginated list of cafes based on the query parameters passed to it
+     * @returns A paginated list of cafes.
+     */
+    async findAllPaginated(
+      {
+        name,
+        address,
+        credit,
+        sort_by,
+      }: {
+        name?: string;
+        address?: string;
+        credit?: number;
+        sort_by?: string;
+      },
+      { query, page = 1, entries_per_page = 9 }: { query?: string; page: number; entries_per_page?: number },
+    ): Promise<PaginatedCafeResult | null> {
+      const query_conditions = { deleted_at: undefined };
+      const number_of_entries_to_skip = (page - 1) * entries_per_page;
+
+      if (name) {
+        query_conditions["name"] = { $regex: name, $options: "i" };
+      }
+
+      if (address) {
+        query_conditions["address"] = { $regex: address, $options: "i" };
+      }
+
+      if (credit) {
+        query_conditions["credit"] = credit;
+      }
+
+      if (query) {
+        query_conditions["$or"] = [
+          { name: { $regex: ".*" + query + ".*", $options: "si" } },
+          { address: { $regex: ".*" + query + ".*", $options: "si" } },
+          { open_at: { $regex: ".*" + query + ".*", $options: "si" } },
+          { close_at: { $regex: ".*" + query + ".*", $options: "si" } },
+        ];
+      }
+
+      let sort_query: Record<string, any> = {};
+      if (sort_by) {
+        const sort_query_array = _.split(sort_by, ",") || [];
+        sort_query_array.map((sort_query_item) => {
+          const sort_conditions_array = sort_query_item.split("_");
+          const sort_key = _.drop(sort_conditions_array).join("_");
+          const sort_value = sort_conditions_array[0];
+          let sort_direction = "desc"; // descending
+          if (sort_value === "min") {
+            sort_direction = "asc"; // ascending
+          }
+          Object.assign(sort_query, { [`${sort_key}`]: sort_direction });
+        });
+      } else {
+        sort_query = { created_at: "desc" }; // Default to created_at
+      }
+
+      const existing = await cafeDbModel
+        .find(query_conditions)
+        .skip(number_of_entries_to_skip)
+        .limit(entries_per_page)
+        .sort(sort_query)
+        .lean({ virtuals: true });
+
+      const total_count = await cafeDbModel.countDocuments(query_conditions);
+
+      if (existing) {
+        const from = page - 1 > 0 ? page - 1 : null;
+        const has_more_entries = existing.length === entries_per_page && page * entries_per_page !== total_count;
+        const to = has_more_entries ? page + 1 : null;
+        const total_pages = Math.ceil(total_count / entries_per_page);
+
+        return {
+          data: existing,
+          pagination: {
+            current_page: page,
+            from,
+            to,
+            per_page: entries_per_page,
+            total: total_count,
+            total_pages,
+          },
+        };
+      }
+
+      return null;
     }
 
     /**
