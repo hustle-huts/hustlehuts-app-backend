@@ -15,3 +15,15 @@ export default interface IBooking {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface PaginatedBookingResult {
+  data: IBooking[];
+  pagination: {
+    current_page: number;
+    from: number | null;
+    to: number | null;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+}

@@ -15,7 +15,7 @@ async function createUserController(httpRequest: Request & { context: { validate
   };
 
   try {
-    const userDetails: Omit<IUser, "_id"> & { password: string } = _.get(httpRequest, "context.validated");
+    const userDetails: Omit<IUser, "_id"> & { password?: string } = _.get(httpRequest, "context.validated");
     const user_exist = await userService.findByEmail({
       email: userDetails.email,
     });
@@ -24,13 +24,10 @@ async function createUserController(httpRequest: Request & { context: { validate
       throw Error("User already existed. Please login instead.");
     }
 
-    const password_hash = await hashPassword({
-      password: userDetails.password,
-    });
-
+    const password_hash = await hashPassword({ password: userDetails.password });
     Object.assign(userDetails, {
       password_hash,
-      type: UserType.CUSTOMER,
+      type: UserType.CUSTOMER, // Temporary only allow user to register as customer
     });
 
     const created_user = await userService.insert(userDetails);

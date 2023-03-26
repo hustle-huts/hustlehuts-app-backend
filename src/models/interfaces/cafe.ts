@@ -19,3 +19,15 @@ export default interface ICafe {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface PaginatedCafeResult {
+  data: ICafe[];
+  pagination: {
+    current_page: number;
+    from: number | null;
+    to: number | null;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+}
