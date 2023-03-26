@@ -26,8 +26,8 @@ async function loginUserController(
     }
 
     const is_valid_password = await verifyPassword({
-      password: password,
-      hash_password: user_exists.password,
+      password,
+      hash_password: user_exists.password_hash,
     });
 
     if (!is_valid_password) {
@@ -48,7 +48,6 @@ async function loginUserController(
         token: login_token,
       });
     }
-    // headers["auth-token"] = token;
 
     return {
       headers,
