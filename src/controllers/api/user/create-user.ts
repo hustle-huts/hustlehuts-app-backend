@@ -33,7 +33,7 @@ async function createUserController(httpRequest: Request & { context: { validate
       type: UserType.CUSTOMER,
     });
 
-    const created_user = await userService.insertUser(userDetails);
+    const created_user = await userService.insert(userDetails);
     if (!created_user) {
       throw new Error(`User was not created.`);
     }

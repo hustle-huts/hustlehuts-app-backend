@@ -15,7 +15,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      * @param payload - This is the payload that will be inserted into the database.
      * @returns The return type is a Promise of an array of IUser objects.
      */
-    async insertUser(payload: Partial<IUser>): Promise<IUser | null> {
+    async insert(payload: Partial<IUser>): Promise<IUser | null> {
       const result = await userDbModel.create([payload]);
       const updated = await userDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
