@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-export default async function hashPassword({ password }: { password?: string }): Promise<string> {
+export default async function hashPassword(password?: string): Promise<string> {
   if (!password) {
     throw new Error("Password is required.");
   }

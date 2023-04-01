@@ -38,7 +38,7 @@ export default function makeBookingService({
      */
     async findById({ id }: { id: string }): Promise<IBooking | null> {
       const query_conditions = { _id: id, deleted_at: undefined };
-      const existing = await bookingDbModel.findOne(query_conditions).lean();
+      const existing = await bookingDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -51,7 +51,10 @@ export default function makeBookingService({
      */
     async findAll(): Promise<IBooking[]> {
       const query_conditions = { deleted_at: undefined };
-      const existing = await bookingDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await bookingDbModel
+        .find(query_conditions)
+        .sort({ updated_at: "desc" })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -67,7 +70,7 @@ export default function makeBookingService({
      */
     async findByCafeAndUser({ cafe_id, user_id }: { cafe_id: string; user_id: string }): Promise<IBooking | null> {
       const query_conditions = { cafe: cafe_id, user: user_id, deleted_at: undefined };
-      const existing = await bookingDbModel.findOne(query_conditions).lean();
+      const existing = await bookingDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -84,7 +87,10 @@ export default function makeBookingService({
      */
     async findAllByCafe({ cafe_id }: { cafe_id: string }): Promise<IBooking[]> {
       const query_conditions = { cafe: cafe_id, deleted_at: undefined };
-      const existing = await bookingDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await bookingDbModel
+        .find(query_conditions)
+        .sort({ updated_at: "desc" })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -100,7 +106,10 @@ export default function makeBookingService({
      */
     async findAllByUser({ user_id }: { user_id: string }): Promise<IBooking[]> {
       const query_conditions = { user: user_id, deleted_at: undefined };
-      const existing = await bookingDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await bookingDbModel
+        .find(query_conditions)
+        .sort({ updated_at: "desc" })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -192,7 +201,7 @@ export default function makeBookingService({
      */
     async update(payload: Partial<IBooking>): Promise<IBooking | null> {
       await bookingDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await bookingDbModel.findById({ _id: payload._id }).lean();
+      const updated = await bookingDbModel.findById({ _id: payload._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }
@@ -216,7 +225,9 @@ export default function makeBookingService({
      * @returns The booking object
      */
     async delete({ id }: { id: string }): Promise<IBooking | null> {
-      const existing = await bookingDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() }).lean();
+      const existing = await bookingDbModel
+        .findOneAndUpdate({ _id: id }, { deleted_at: new Date() })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }

@@ -23,20 +23,9 @@ async function createUserController(httpRequest: Request & { context: { validate
       throw Error("User already existed. Please login instead.");
     }
 
-    const account_exists = await userService.findByEmailExists({
-      email: userDetails.email,
-    });
+    const hash_password = await hashPassword({ password: userDetails.password });
 
-    if (account_exists?.deleted_at) {
-      await userService.hardDelete({ id: account_exists._id });
-    }
-
-    const password_hash = await hashPassword({ password: userDetails.password });
-
-    Object.assign(userDetails, {
-      password_hash,
-      type: UserType.CUSTOMER,
-    });
+    Object.assign(userDetails, { hash_password, type: UserType.CUSTOMER });
 
     const created_user = await userService.insert(userDetails);
     if (!created_user) {

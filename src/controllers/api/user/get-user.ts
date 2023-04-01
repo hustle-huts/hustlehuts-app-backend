@@ -23,7 +23,7 @@ async function getUserController(httpRequest: Request & { context: { validated: 
       headers,
       statusCode: 200,
       body: {
-        data: omit(user, ["password_hash"]),
+        data: omit(user, ["hash_password"]),
       },
     };
   } catch (err: any) {

@@ -24,7 +24,7 @@ async function getUserByEmailController(httpRequest: Request & { context: { vali
       headers,
       statusCode: 200,
       body: {
-        data: omit(user, ["password_hash"]),
+        data: omit(user, ["hash_password"]),
       },
     };
   } catch (err: any) {

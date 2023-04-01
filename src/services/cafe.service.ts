@@ -35,7 +35,7 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      */
     async findById({ id }: { id: string }): Promise<ICafe | null> {
       const query_conditions = { _id: id, deleted_at: undefined };
-      const existing = await cafeDbModel.findOne(query_conditions).lean();
+      const existing = await cafeDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -49,7 +49,7 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      */
     async findByManager({ user_id }: { user_id: string }): Promise<ICafe | null> {
       const query_conditions = { manager: user_id } as any;
-      const existing = await cafeDbModel.findOne(query_conditions).lean();
+      const existing = await cafeDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -62,7 +62,7 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      */
     async findAll(): Promise<ICafe[]> {
       const query_conditions = { deleted_at: undefined };
-      const existing = await cafeDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await cafeDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -166,7 +166,7 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      */
     async update(payload: Partial<ICafe>): Promise<ICafe | null> {
       await cafeDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await cafeDbModel.findById({ _id: payload._id }).lean();
+      const updated = await cafeDbModel.findById({ _id: payload._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }
@@ -190,7 +190,9 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      * @returns The cafe object
      */
     async delete({ id }: { id: string }): Promise<ICafe | null> {
-      const existing = await cafeDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() }).lean();
+      const existing = await cafeDbModel
+        .findOneAndUpdate({ _id: id }, { deleted_at: new Date() })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }

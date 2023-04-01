@@ -33,7 +33,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async findById({ id }: { id: string }): Promise<IUser | null> {
       const query_conditions = { _id: id, deleted_at: undefined };
-      const existing = await userDbModel.findOne(query_conditions).lean();
+      const existing = await userDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -47,7 +47,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async findByEmail({ email, type = UserType.CUSTOMER }: { email: string; type?: UserType }): Promise<IUser | null> {
       const query_conditions = { email, type, deleted_at: undefined };
-      const existing = await userDbModel.findOne(query_conditions).lean();
+      const existing = await userDbModel.findOne(query_conditions).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -57,15 +57,12 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     /**
      * > Find a user by email
      * @param  - { email: string }
-     * @returns The user object is being returned.
+     * @returns Boolean.
      */
-    async findByEmailExists({ email }: { email: string }): Promise<IUser | null> {
+    async findByEmailExists({ email }: { email: string }): Promise<boolean> {
       const query_conditions = { email };
-      const existing = await userDbModel.findOne(query_conditions).lean();
-      if (existing) {
-        return existing;
-      }
-      return null;
+      const existing = await userDbModel.findOne(query_conditions).lean({ virtuals: true });
+      return !!existing;
     }
 
     /**
@@ -74,7 +71,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
-      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -90,7 +87,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async findAllByUserIds({ user_ids }: { user_ids: string[] }): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined, _id: { $in: user_ids } };
-      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean();
+      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" }).lean({ virtuals: true });
       if (existing) {
         return existing;
       }
@@ -104,7 +101,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async update(payload: Partial<IUser>): Promise<IUser | null> {
       await userDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await userDbModel.findById({ _id: payload._id }).lean();
+      const updated = await userDbModel.findById({ _id: payload._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }
@@ -128,7 +125,9 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      * @returns The user object
      */
     async delete({ id }: { id: string }): Promise<IUser | null> {
-      const existing = await userDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() }).lean();
+      const existing = await userDbModel
+        .findOneAndUpdate({ _id: id }, { deleted_at: new Date() })
+        .lean({ virtuals: true });
       if (existing) {
         return existing;
       }

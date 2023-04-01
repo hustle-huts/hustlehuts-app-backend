@@ -27,7 +27,7 @@ async function loginUserController(
 
     const is_valid_password = await verifyPassword({
       password,
-      hash_password: user_exists.password_hash,
+      hash_password: user_exists.hash_password,
     });
 
     if (!is_valid_password) {
@@ -53,7 +53,7 @@ async function loginUserController(
       headers,
       statusCode: 200,
       body: {
-        data: omit(user_exists, ["password_hash"]),
+        data: omit(user_exists, ["hash_password"]),
         login_token,
       },
     };

@@ -14,7 +14,7 @@ export default interface IUser {
   first_name: string;
   last_name: string;
   email: string;
-  password_hash: string;
+  hash_password?: string; // Password is optional for social login
   type: UserType;
   telegram_handle?: string;
   provider: UserLoginProvider;

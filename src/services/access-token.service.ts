@@ -12,7 +12,7 @@ export default function makeAccessTokenDb({
      * @returns An array of access tokens.
      */
     async findAll(): Promise<IAccessToken[]> {
-      const existing = await accessTokenDbModel.find().lean();
+      const existing = await accessTokenDbModel.find().lean({ virtuals: true });
       if (existing) {
         return existing.map((accessToken) => {
           return {
@@ -42,7 +42,7 @@ export default function makeAccessTokenDb({
       user_type?: string;
       revoked: boolean;
     }): Promise<IAccessToken | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked }).lean();
+      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked }).lean({ virtuals: true });
       if (existing) {
         return {
           token: existing.token,
@@ -60,7 +60,7 @@ export default function makeAccessTokenDb({
      * @returns The user_id of the user who is logged in.
      */
     async findUserId({ token }: { token: string }): Promise<string | undefined> {
-      const existing = await accessTokenDbModel.findOne({ token, revoked: false }).lean();
+      const existing = await accessTokenDbModel.findOne({ token, revoked: false }).lean({ virtuals: true });
       if (existing) {
         return existing.user_id;
       }
@@ -76,7 +76,9 @@ export default function makeAccessTokenDb({
      * @returns The token is being returned.
      */
     async findValidToken({ user_id, user_type }: { user_id: string; user_type?: string }): Promise<string | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked: false }).lean();
+      const existing = await accessTokenDbModel
+        .findOne({ user_id, user_type, revoked: false })
+        .lean({ virtuals: true });
       if (existing) {
         return existing.token;
       }
@@ -115,7 +117,7 @@ export default function makeAccessTokenDb({
       const result = await accessTokenDbModel
         .findOneAndUpdate({ token, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
-        .lean();
+        .lean({ virtuals: true });
       return result && result.token;
     }
 
@@ -138,7 +140,7 @@ export default function makeAccessTokenDb({
       const result = await accessTokenDbModel
         .findOneAndUpdate({ user_id, user_type, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
-        .lean();
+        .lean({ virtuals: true });
       return !!result && !!result.token;
     }
 
@@ -158,7 +160,7 @@ export default function makeAccessTokenDb({
       const updated = await accessTokenDbModel
         .updateMany(query_conditions, { revoked: true })
         .session(options.session)
-        .lean();
+        .lean({ virtuals: true });
       return updated.acknowledged;
     }
   })();

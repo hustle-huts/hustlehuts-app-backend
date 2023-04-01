@@ -28,6 +28,9 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.13",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.0",
     "prettier": "^2.4.1",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
@@ -36,6 +39,8 @@
     "@types/chai-http": "^4.2.0",
     "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.5",
+    "@types/passport": "^1.0.4",
+    "@types/passport-jwt": "^3.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
@@ -52,6 +57,7 @@
     "mongoose": "^6.0.9",
     "mongoose-lean-virtuals": "^0.9.1",
     "node-geocoder": "^4.2.0",
+    "passport-facebook": "^3.0.0",
     "validatorjs": "^3.22.1",
     "winston": "^3.3.3"
   }
