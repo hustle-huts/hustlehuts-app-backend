@@ -8,7 +8,6 @@ export default interface IBooking {
   slots: {
     date: string;
     time: string[];
-    timezone: string;
     seat: number;
   }[];
   deleted_at?: Date;

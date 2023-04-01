@@ -8,7 +8,6 @@ const bookingSchema = new mongoose.Schema(
       {
         date: { type: String, trim: true, default: null },
         time: [{ type: String, trim: true, default: [] }],
-        timezone: { type: String, trim: true, default: "Asia/Singapore" },
         seat: { type: Number },
       },
     ],
