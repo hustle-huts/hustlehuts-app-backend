@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 makeDb();
-const PORT = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });

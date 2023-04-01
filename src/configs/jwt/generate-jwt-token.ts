@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserType } from "../../models/interfaces/user";
+import { UserType } from "../../models/interfaces/user.interface";
 
 const secret = process.env.JWT_SECRET || "AUTH_SECRET";
 const cafe_secret = process.env.JWT_CAFE_SECRET || "CAFE_AUTH_SECRET";

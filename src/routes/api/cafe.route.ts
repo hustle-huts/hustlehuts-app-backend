@@ -1,6 +1,6 @@
 import express from "express";
 import makeExpressCallback from "../../express-callback";
-import makeValidator from "../../middlewares/validator-middleware";
+import makeValidator from "../../middlewares/validator.middleware";
 import { getCafeRules, getCafesPaginatedRules } from "../../controllers/api/cafe/validator";
 import { getCafeController, getCafesPaginatedController } from "../../controllers/api/cafe";
 

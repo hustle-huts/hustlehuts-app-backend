@@ -9,7 +9,7 @@ import {
   logoutUserController,
 } from "../../controllers/api/user";
 
-import tokenValidatorMiddleware from "../../middlewares/token-validator-middleware";
+import tokenValidatorMiddleware from "../../middlewares/token-validator.middleware";
 
 const userRouter = express.Router();
 

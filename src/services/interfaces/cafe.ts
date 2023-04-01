@@ -1,4 +1,4 @@
-import ICafe, { PaginatedCafeResult } from "../../models/interfaces/cafe";
+import ICafe, { PaginatedCafeResult } from "../../models/interfaces/cafe.interface";
 
 export interface ICafeService {
   insert(payload: Partial<ICafe>): Promise<ICafe | null>;

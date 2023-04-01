@@ -1,4 +1,4 @@
-import IBooking, { PaginatedBookingResult } from "../../models/interfaces/booking";
+import IBooking, { PaginatedBookingResult } from "../../models/interfaces/booking.interface";
 
 export interface IBookingService {
   insert(payload: Partial<IBooking>): Promise<IBooking | null>;

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import IBooking from "../../../models/interfaces/booking";
+import IBooking from "../../../models/interfaces/booking.interface";
 import { bookingService } from "../../../services";
 
 /**

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import ICafe from "../../../models/interfaces/cafe";
+import ICafe from "../../../models/interfaces/cafe.interface";
 import { cafeService } from "../../../services";
 
 /**

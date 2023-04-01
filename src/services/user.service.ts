@@ -6,7 +6,7 @@
  */
 import mongoose from "mongoose";
 
-import IUser, { UserType } from "../models/interfaces/user";
+import IUser, { UserType } from "../models/interfaces/user.interface";
 
 export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
   return new (class MongooseUserDb {

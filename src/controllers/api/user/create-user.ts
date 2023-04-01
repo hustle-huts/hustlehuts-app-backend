@@ -2,7 +2,7 @@ import _ from "lodash";
 import { hashPassword } from "../../../configs/bcrypt";
 import { omit } from "../../../utils/omit";
 
-import IUser, { UserType } from "../../../models/interfaces/user";
+import IUser, { UserType } from "../../../models/interfaces/user.interface";
 import { userService } from "../../../services";
 
 /**

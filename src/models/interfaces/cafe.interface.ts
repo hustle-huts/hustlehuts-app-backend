@@ -1,4 +1,4 @@
-import IUser from "./user";
+import IUser from "./user.interface";
 
 export default interface ICafe {
   _id: string;

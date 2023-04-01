@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { UserType } from "../../../models/interfaces/user";
+import { UserType } from "../../../models/interfaces/user.interface";
 import { accessTokenService } from "../../../services";
 
 /**

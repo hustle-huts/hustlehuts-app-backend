@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import IAccessToken from "../models/interfaces/access-token";
+import IAccessToken from "../models/interfaces/access-token.interface";
 
 export default function makeAccessTokenDb({
   accessTokenDbModel,

@@ -1,6 +1,6 @@
 import express from "express";
 import makeExpressCallback from "../../express-callback";
-import makeValidator from "../../middlewares/validator-middleware";
+import makeValidator from "../../middlewares/validator.middleware";
 import {
   createBookingRules,
   getBookingRules,
@@ -13,7 +13,7 @@ import {
   getBookingsPaginatedController,
 } from "../../controllers/api/booking";
 
-import tokenValidatorMiddleware from "../../middlewares/token-validator-middleware";
+import tokenValidatorMiddleware from "../../middlewares/token-validator.middleware";
 
 const bookingRouter = express.Router();
 

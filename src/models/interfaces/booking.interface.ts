@@ -1,5 +1,5 @@
-import ICafe from "./cafe";
-import IUser from "./user";
+import ICafe from "./cafe.interface";
+import IUser from "./user.interface";
 
 export default interface IBooking {
   _id: string;

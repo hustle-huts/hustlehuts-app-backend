@@ -7,7 +7,7 @@
 import _ from "lodash";
 import mongoose from "mongoose";
 import { IBookingService } from "./interfaces/booking";
-import IBooking, { PaginatedBookingResult } from "../models/interfaces/booking";
+import IBooking, { PaginatedBookingResult } from "../models/interfaces/booking.interface";
 
 export default function makeBookingService({
   bookingDbModel,

@@ -8,7 +8,7 @@ import _ from "lodash";
 import mongoose from "mongoose";
 
 import { ICafeService } from "./interfaces/cafe";
-import ICafe, { PaginatedCafeResult } from "../models/interfaces/cafe";
+import ICafe, { PaginatedCafeResult } from "../models/interfaces/cafe.interface";
 
 export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose.Model<ICafe & mongoose.Document> }) {
   return new (class MongooseCafeDb implements ICafeService {

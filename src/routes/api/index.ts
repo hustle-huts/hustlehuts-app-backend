@@ -1,7 +1,7 @@
 import express from "express";
-import userRouter from "./user";
-import cafeRouter from "./cafe";
-import bookingRouter from "./booking";
+import userRouter from "./user.route";
+import cafeRouter from "./cafe.route";
+import bookingRouter from "./booking.route";
 
 const router = express.Router();
 

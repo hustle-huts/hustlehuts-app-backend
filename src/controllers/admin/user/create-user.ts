@@ -1,5 +1,5 @@
 import _ from "lodash";
-import IUser, { UserType } from "../../../models/interfaces/user";
+import IUser, { UserType } from "../../../models/interfaces/user.interface";
 import { userService } from "../../../services";
 import { hashPassword } from "../../../configs/bcrypt";
 

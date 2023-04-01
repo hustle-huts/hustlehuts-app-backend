@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import userSchema from "./schemas/user";
-import accessTokenSchema from "./schemas/access-token";
-import cafeSchema from "./schemas/cafe";
-import bookingSchema from "./schemas/booking";
-import IUser from "./interfaces/user";
-import IAccessToken from "./interfaces/access-token";
-import ICafe from "./interfaces/cafe";
-import IBooking from "./interfaces/booking";
+import userSchema from "./schemas/user.schema";
+import accessTokenSchema from "./schemas/access-token.schema";
+import cafeSchema from "./schemas/cafe.schema";
+import bookingSchema from "./schemas/booking.schema";
+import IUser from "./interfaces/user.interface";
+import IAccessToken from "./interfaces/access-token.interface";
+import ICafe from "./interfaces/cafe.interface";
+import IBooking from "./interfaces/booking.interface";
 
 /* Creating a new model called User using the userSchema. */
 const userDbModel = mongoose.model<IUser & mongoose.Document>("User", userSchema);

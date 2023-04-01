@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { hashPassword } from "../../../configs/bcrypt";
 
-import IUser from "../../../models/interfaces/user";
+import IUser from "../../../models/interfaces/user.interface";
 import { userService } from "../../../services";
 
 /**

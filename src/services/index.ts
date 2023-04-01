@@ -1,8 +1,8 @@
 import { userDbModel, accessTokenDbModel, cafeDbModel, bookingDbModel } from "../models";
-import makeUserService from "./user";
-import makeAccessTokenDb from "./access-token";
-import makeCafeService from "./cafe";
-import makeBookingService from "./booking";
+import makeUserService from "./user.service";
+import makeAccessTokenDb from "./access-token.service";
+import makeCafeService from "./cafe.service";
+import makeBookingService from "./booking.service";
 
 const userService = makeUserService({ userDbModel });
 const accessTokenService = makeAccessTokenDb({ accessTokenDbModel });
