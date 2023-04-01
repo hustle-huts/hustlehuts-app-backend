@@ -2,11 +2,16 @@ import _ from "lodash";
 import moment from "moment-timezone";
 import mongoose from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
+import NodeGeocoder from "node-geocoder";
 
 const cafeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     address: { type: String, required: true },
+    location: {
+      type: { type: String, enum: ["Point"], required: true, default: "Point" },
+      coordinates: { type: [Number], required: true },
+    },
     // TODO: Change if only there's request to support multiple opening hours
     open_at: { type: String, required: true }, // Assuming that the cafe opens at same time everyday
     close_at: { type: String, required: true }, // Assuming that the cafe closes at same time everyday
@@ -37,6 +42,33 @@ const cafeSchema = new mongoose.Schema(
   },
 );
 
+// Define a pre-save hook that geocodes the cafe's formatted address and updates its location field
+cafeSchema.pre("save", async function () {
+  // Use NodeGeocoder to geocode the cafe's formatted address
+  const geocoder = NodeGeocoder({
+    provider: "google",
+    apiKey: process.env.GOOGLE_MAPS_API_KEY, // Replace with your own Google Maps API key
+  });
+
+  const address = _.get(this, "address");
+  try {
+    const [res] = await geocoder.geocode(address);
+    if (!res) {
+      throw Error("Unable to geocode address");
+    }
+
+    const longitude: number = _.get(res, "longitude", 0);
+    const latitude: number = _.get(res, "latitude", 0);
+    // Update the cafe's location field with the latitude and longitude
+    (this.location as any) = {
+      type: "Point",
+      coordinates: [longitude, latitude],
+    };
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 /* It's a virtual getter that returns true if the cafe is open, false otherwise. */
 cafeSchema.virtual("is_open").get(function () {
   const open_at = _.get(this, "open_at");
@@ -46,6 +78,8 @@ cafeSchema.virtual("is_open").get(function () {
   const now = moment.tz("Asia/Singapore");
   return now.isBetween(close_at_moment, open_at_moment);
 });
+
+cafeSchema.index({ location: "2dsphere" });
 
 cafeSchema.plugin(mongooseLeanVirtuals);
 

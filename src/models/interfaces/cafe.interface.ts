@@ -4,6 +4,10 @@ export default interface ICafe {
   _id: string;
   name: string;
   address: string;
+  location: {
+    type: string;
+    coordinates: [number, number];
+  };
   open_at: string;
   close_at: string;
   credit: number;
