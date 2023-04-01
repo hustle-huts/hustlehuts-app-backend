@@ -7,6 +7,9 @@ export default function makeExpressCallback(controller: IController) {
     const httpRequest = {
       context: {
         validated: Object.assign({}, req.body, req.params, req.query),
+        user: req.user,
+        file: req.file,
+        locals: res.locals,
       },
       query: req.query,
       params: req.params,

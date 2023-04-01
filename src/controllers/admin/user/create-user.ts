@@ -23,8 +23,7 @@ async function createUserController(httpRequest: Request & { context: { validate
       throw Error("User already existed. Please login instead.");
     }
 
-    const hash_password = await hashPassword({ password: userDetails.password });
-
+    const hash_password = await hashPassword(userDetails.password);
     Object.assign(userDetails, { hash_password, type: UserType.CUSTOMER });
 
     const created_user = await userService.insert(userDetails);
