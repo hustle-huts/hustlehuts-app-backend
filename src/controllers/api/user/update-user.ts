@@ -21,7 +21,7 @@ async function updateUserController(
     // Password is passed in, hash the new password and save into DB
     const new_password = _.get(userDetails, "password");
     if (new_password) {
-      const hash_password = await hashPassword({ password: new_password });
+      const hash_password = await hashPassword(new_password);
       Object.assign(userDetails, { hash_password });
     }
 

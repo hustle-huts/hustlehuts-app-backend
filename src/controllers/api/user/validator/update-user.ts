@@ -3,7 +3,7 @@ const updateUserRules = {
   first_name: "string",
   last_name: "string",
   telegram_handle: "string",
-  password: "string|min:8|confirmed",
+  password: "string|min:8",
 };
 
 export default updateUserRules;
