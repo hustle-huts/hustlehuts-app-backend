@@ -12,28 +12,27 @@ import {
   getBookingsByUserController,
   getBookingsPaginatedController,
 } from "../../controllers/api/booking";
-
-import tokenValidatorMiddleware from "../../middlewares/token-validator.middleware";
+import authenticateUserJWT from "../../middlewares/authenticate-user.middlware";
 
 const bookingRouter = express.Router();
 
 bookingRouter.post(
   "/",
   makeValidator(createBookingRules),
-  tokenValidatorMiddleware,
+  authenticateUserJWT(),
   makeExpressCallback(createBookingController),
 );
 bookingRouter.get(
   "/",
   makeValidator(getBookingsPaginatedRules),
-  tokenValidatorMiddleware,
+  authenticateUserJWT(),
   makeExpressCallback(getBookingsPaginatedController),
 );
-bookingRouter.get("/user", tokenValidatorMiddleware, makeExpressCallback(getBookingsByUserController));
+bookingRouter.get("/user", authenticateUserJWT(), makeExpressCallback(getBookingsByUserController));
 bookingRouter.get(
   "/:booking_id",
   makeValidator(getBookingRules),
-  tokenValidatorMiddleware,
+  authenticateUserJWT(),
   makeExpressCallback(getBookingController),
 );
 

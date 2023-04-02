@@ -1,0 +1,78 @@
+components:
+  schemas:
+    Cafe:
+      type: object
+      properties:
+        name:
+          type: string
+          required: true
+        address:
+          type: string
+          required: true
+        location:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [Point]
+              default: Point
+            coordinates:
+              type: array
+              items:
+                type: number
+        open_at:
+          type: string
+          required: true
+        close_at:
+          type: string
+          required: true
+        credit:
+          type: number
+          default: 0
+        has_wifi:
+          type: boolean
+          default: false
+        has_charging:
+          type: boolean
+          default: false
+        has_ambience:
+          type: boolean
+          default: false
+        image_url:
+          type: string
+        availability_time_slots:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                trim: true
+                default: null
+              time:
+                type: array
+                items:
+                  type: string
+                  trim: true
+              seat:
+                type: number
+        manager:
+          type: string
+          format: uuid
+        rating:
+          type: number
+          default: 0
+        deleted_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - name
+        - address
+        - open_at
+        - close_at

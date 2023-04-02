@@ -12,6 +12,7 @@ import multer from "multer";
 import fileUploadMiddleware from "./middlewares/file-upload.middleware";
 import { cafeService } from "./services";
 import { createSampleData } from "./utils/createSampleData";
+import swaggerRouter from "./routes/swagger";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
 }
+app.use(swaggerRouter);
 
 makeDb().then(async () => {
   const cafes = await cafeService.findAll();

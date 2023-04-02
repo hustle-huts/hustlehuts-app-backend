@@ -5,6 +5,8 @@ const getCafesPaginatedRules = {
   query: "string",
   page: "string",
   entries_per_page: "string",
+  longitude: "string",
+  latitude: "string",
   sort_by: "string",
 };
 
