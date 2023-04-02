@@ -13,7 +13,7 @@ export default async function fileUploadMiddleware(req: Request & { file?: any }
   try {
     const file = req.file;
     if (!file) {
-      throw new Error("No file uploaded");
+      return next();
     }
 
     const buffer = file.buffer;
@@ -21,10 +21,7 @@ export default async function fileUploadMiddleware(req: Request & { file?: any }
 
     // upload file to web3.storage
     const cid = await client.put([buffer]);
-    res.locals.file = {
-      cid,
-      fileName,
-    } as IFile;
+    res.locals.file = { cid, fileName } as IFile;
 
     next();
   } catch (error) {
