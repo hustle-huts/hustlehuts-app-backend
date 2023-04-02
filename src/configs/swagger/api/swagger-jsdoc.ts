@@ -1,8 +1,10 @@
 import swaggerJsDoc from "swagger-jsdoc";
 
 const is_production = process.env.NODE_ENV === "production";
-const api_route = is_production ? "routes/api/*.js" : "src/routes/api/*.ts";
-const documentation_route = is_production ? "configs/swagger/schemas/*.yaml" : "src/configs/swagger/schemas/*.yaml";
+const api_route = is_production ? "build/routes/api/*.js" : "src/routes/api/*.ts";
+const documentation_route = is_production
+  ? "build/configs/swagger/schemas/*.yaml"
+  : "src/configs/swagger/schemas/*.yaml";
 
 const options = {
   definition: {
