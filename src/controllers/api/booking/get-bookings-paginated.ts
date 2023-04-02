@@ -52,9 +52,7 @@ async function getBookingsPaginatedController(
     return {
       headers,
       statusCode: 200,
-      body: {
-        data: bookings,
-      },
+      body: bookings,
     };
   } catch (err: any) {
     return {

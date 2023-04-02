@@ -16,6 +16,8 @@ async function getCafesPaginatedController(
         page: string;
         entries_per_page?: string;
         sort_by?: string;
+        longitude?: string;
+        latitude?: string;
       };
     };
   },
@@ -33,6 +35,8 @@ async function getCafesPaginatedController(
       page = "1",
       entries_per_page = "10",
       sort_by,
+      longitude,
+      latitude,
     }: {
       name?: string;
       address?: string;
@@ -41,6 +45,8 @@ async function getCafesPaginatedController(
       page: string;
       entries_per_page?: string;
       sort_by?: string;
+      longitude?: string;
+      latitude?: string;
     } = _.get(httpRequest, "context.validated");
 
     const cafes = await cafeService.findAllPaginated(
@@ -48,6 +54,8 @@ async function getCafesPaginatedController(
         name,
         address,
         credit: credit ? Number(credit) : undefined,
+        longitude: longitude ? Number(longitude) : undefined,
+        latitude: latitude ? Number(latitude) : undefined,
         sort_by,
       },
       {
@@ -60,9 +68,7 @@ async function getCafesPaginatedController(
     return {
       headers,
       statusCode: 200,
-      body: {
-        data: cafes,
-      },
+      body: cafes,
     };
   } catch (err: any) {
     return {

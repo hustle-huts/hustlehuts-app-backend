@@ -4,12 +4,14 @@ dotenv.config();
 import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
-import makeLogger from "./src/configs/logs";
-import makeDb from "./src/configs/make-db";
-import apiRouter from "./src/routes/api";
-import adminRouter from "./src/routes/admin";
+import makeLogger from "./configs/logs";
+import makeDb from "./configs/make-db";
+import apiRouter from "./routes/api";
+import adminRouter from "./routes/admin";
 import multer from "multer";
-import fileUploadMiddleware from "./src/middlewares/file-upload.middleware";
+import fileUploadMiddleware from "./middlewares/file-upload.middleware";
+import { cafeService } from "./services";
+import { createSampleData } from "./utils/createSampleData";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -29,7 +31,12 @@ if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
 }
 
-makeDb();
+makeDb().then(async () => {
+  const cafes = await cafeService.findAll();
+  if (cafes.length === 0) {
+    await createSampleData();
+  }
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);

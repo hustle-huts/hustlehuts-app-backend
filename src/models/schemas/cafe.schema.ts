@@ -9,8 +9,8 @@ const cafeSchema = new mongoose.Schema(
     name: { type: String, required: true },
     address: { type: String, required: true },
     location: {
-      type: { type: String, enum: ["Point"], required: true, default: "Point" },
-      coordinates: { type: [Number], required: true },
+      type: { type: String, enum: ["Point"], default: "Point" },
+      coordinates: { type: [Number] },
     },
     // TODO: Change if only there's request to support multiple opening hours
     open_at: { type: String, required: true }, // Assuming that the cafe opens at same time everyday

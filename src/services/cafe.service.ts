@@ -79,11 +79,15 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
         address,
         credit,
         sort_by,
+        longitude,
+        latitude,
       }: {
         name?: string;
         address?: string;
         credit?: number;
         sort_by?: string;
+        longitude?: number;
+        latitude?: number;
       },
       { query, page = 1, entries_per_page = 9 }: { query?: string; page: number; entries_per_page?: number },
     ): Promise<PaginatedCafeResult | null> {
@@ -100,6 +104,18 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
 
       if (credit) {
         query_conditions["credit"] = credit;
+      }
+
+      if (longitude && latitude) {
+        query_conditions["location"] = {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [longitude, latitude],
+            },
+            $maxDistance: 1000,
+          },
+        };
       }
 
       if (query) {

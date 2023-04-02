@@ -15,7 +15,7 @@ const userDbModel = mongoose.model<IUser & mongoose.Document>("User", userSchema
 const accessTokenDbModel = mongoose.model<IAccessToken & mongoose.Document>("AccessToken", accessTokenSchema);
 
 /* Create a new model called Cafe using the cafeSchema. */
-const cafeDbModel = mongoose.model<ICafe & mongoose.Document>("Cafe", cafeSchema);
+const cafeDbModel = mongoose.model<ICafe & mongoose.Document>("Cafe", cafeSchema, "cafes");
 
 /* Create a new model called Booking using the bookingSchema. */
 const bookingDbModel = mongoose.model<IBooking & mongoose.Document>("Booking", bookingSchema);
