@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf build && yarn && tsc",
+    "build": "rm -rf build && npm install && tsc",
     "start": "node ./build/index.js",
     "dev": "nodemon",
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
@@ -43,6 +43,7 @@
     "@types/jsonwebtoken": "^8.5.5",
     "@types/passport": "^1.0.4",
     "@types/passport-jwt": "^3.0.3",
+    "and": "^0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
@@ -61,6 +62,8 @@
     "multer": "^1.4.5-lts.1",
     "node-geocoder": "^4.2.0",
     "passport-facebook": "^3.0.0",
+    "swagger-autogen": "^2.23.1",
+    "swagger-ui-express": "^4.6.2",
     "validatorjs": "^3.22.1",
     "web3.storage": "^4.5.4",
     "winston": "^3.3.3"
