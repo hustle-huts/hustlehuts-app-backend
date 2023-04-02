@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon",
+    "build": "rm -rf build && npm install && tsc",
+    "start": "node ./build/index.js",
     "dev": "nodemon",
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }'&&NODE_ENV=test mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
