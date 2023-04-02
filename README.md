@@ -16,6 +16,6 @@ Endpoints
 
 Localhost: localhost:3000
 
-Production: https://hustlehuts-app-backend.vercel.app/
+Production: https://hustlehuts-app-backend.onrender.com
 
 Commits pushed to main will auto deploy to the endpoint above
