@@ -2,10 +2,10 @@
   "name": "hustlehuts-app-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "build": "rm -rf build; yarn; gulp --max-old-space-size=8192",
-    "start": "node ./build/src/index.js",
+    "build": "rm -rf build && yarn && tsc",
+    "start": "node ./build/index.js",
     "dev": "nodemon",
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }'&&NODE_ENV=test mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
@@ -63,9 +63,6 @@
     "passport-facebook": "^3.0.0",
     "validatorjs": "^3.22.1",
     "web3.storage": "^4.5.4",
-    "winston": "^3.3.3",
-    "gulp": "^4.0.2",
-    "gulp-clean": "^0.4.0",
-    "gulp-typescript": "^6.0.0-alpha.1"
+    "winston": "^3.3.3"
   }
 }
