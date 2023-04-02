@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf build && npm install && tsc",
+    "build": "rm -rf build && npm install && tsc && npm run copy-files",
     "start": "node ./build/index.js",
     "dev": "nodemon",
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }'&&NODE_ENV=test mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "copy-files": "copyfiles -u 1 src/**/**/**/*.yaml build/"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "@types/validatorjs": "^3.15.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
