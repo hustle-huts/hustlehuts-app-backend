@@ -62,7 +62,6 @@
     "multer": "^1.4.5-lts.1",
     "node-geocoder": "^4.2.0",
     "passport-facebook": "^3.0.0",
-    "swagger-autogen": "^2.23.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
     "validatorjs": "^3.22.1",
