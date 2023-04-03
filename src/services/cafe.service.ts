@@ -176,6 +176,86 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
     }
 
     /**
+     * It takes in a bunch of query parameters, and returns a list of cafes that match the query parameters
+     * @param  - `name` - the name of the cafe
+     * @returns An array of cafes
+     */
+    async findAllByQuery({
+      name,
+      address,
+      credit,
+      sort_by,
+      longitude,
+      latitude,
+      query,
+    }: {
+      name?: string;
+      address?: string;
+      credit?: number;
+      sort_by?: string;
+      longitude?: number;
+      latitude?: number;
+      query?: string;
+    }): Promise<ICafe[]> {
+      const query_conditions = { deleted_at: undefined };
+      if (name) {
+        query_conditions["name"] = { $regex: name, $options: "i" };
+      }
+
+      if (address) {
+        query_conditions["address"] = { $regex: address, $options: "i" };
+      }
+
+      if (credit) {
+        query_conditions["credit"] = credit;
+      }
+
+      if (longitude && latitude) {
+        query_conditions["location"] = {
+          $near: {
+            $geometry: {
+              type: "Point",
+              coordinates: [longitude, latitude],
+            },
+            $maxDistance: 1000,
+          },
+        };
+      }
+
+      if (query) {
+        query_conditions["$or"] = [
+          { name: { $regex: ".*" + query + ".*", $options: "si" } },
+          { address: { $regex: ".*" + query + ".*", $options: "si" } },
+          { open_at: { $regex: ".*" + query + ".*", $options: "si" } },
+          { close_at: { $regex: ".*" + query + ".*", $options: "si" } },
+        ];
+      }
+
+      let sort_query: Record<string, any> = {};
+      if (sort_by) {
+        const sort_query_array = _.split(sort_by, ",") || [];
+        sort_query_array.map((sort_query_item) => {
+          const sort_conditions_array = sort_query_item.split("_");
+          const sort_key = _.drop(sort_conditions_array).join("_");
+          const sort_value = sort_conditions_array[0];
+          let sort_direction = "desc"; // descending
+          if (sort_value === "min") {
+            sort_direction = "asc"; // ascending
+          }
+          Object.assign(sort_query, { [`${sort_key}`]: sort_direction });
+        });
+      } else {
+        sort_query = { created_at: "desc" }; // Default to created_at
+      }
+
+      const existing = await cafeDbModel.find(query_conditions).sort(sort_query).lean({ virtuals: true });
+      if (existing) {
+        return existing;
+      }
+      return [];
+    }
+
+    /**
      * It updates a cafe in the database.
      * @param payload - This is the data that is being passed in from the controller.
      * @returns The updated cafe object.

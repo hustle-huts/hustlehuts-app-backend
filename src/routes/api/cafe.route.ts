@@ -1,8 +1,8 @@
 import express from "express";
 import makeExpressCallback from "../../express-callback";
 import makeValidator from "../../middlewares/validator.middleware";
-import { getCafeRules, getCafesPaginatedRules } from "../../controllers/api/cafe/validator";
-import { getCafeController, getCafesPaginatedController } from "../../controllers/api/cafe";
+import { getCafeRules, getCafesPaginatedRules, getCafesByQueryRules } from "../../controllers/api/cafe/validator";
+import { getCafeController, getCafesPaginatedController, getCafesByQueryController } from "../../controllers/api/cafe";
 
 const cafeRouter = express.Router();
 /**
@@ -88,7 +88,72 @@ const cafeRouter = express.Router();
 cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(getCafesPaginatedController));
 
 /**
- * @swagger
+ * @openapi
+ * /api/cafe/query:
+ *   get:
+ *     tags:
+ *      - /api/cafe
+ *     summary: Get cafes by query (non-paginated)
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Name of the cafe to search for.
+ *       - in: query
+ *         name: address
+ *         schema:
+ *           type: string
+ *         description: Address of the cafe to search for.
+ *       - in: query
+ *         name: credit
+ *         schema:
+ *           type: string
+ *         description: Amount of credit the cafe has.
+ *       - in: query
+ *         name: query
+ *         schema:
+ *           type: string
+ *         description: Query to search for cafes.
+ *       - in: query
+ *         name: sort_by
+ *         schema:
+ *           type: string
+ *         description: The field to sort the cafes by.
+ *       - in: query
+ *         name: longitude
+ *         schema:
+ *           type: string
+ *         description: The longitude of the location to search for cafes.
+ *       - in: query
+ *         name: latitude
+ *         schema:
+ *           type: string
+ *         description: The latitude of the location to search for cafes.
+ *     responses:
+ *       '200':
+ *         description: A list of cafes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cafe'
+ *       '404':
+ *         description: The requested resource was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ */
+cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallback(getCafesByQueryController));
+
+/**
+ * @openapi
  * /api/cafe/{cafe_id}:
  *   get:
  *     summary: Get a cafe by ID

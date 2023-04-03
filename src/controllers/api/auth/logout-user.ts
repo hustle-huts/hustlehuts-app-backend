@@ -1,18 +1,18 @@
 import _ from "lodash";
-import { UserType } from "../../../models/interfaces/user.interface";
+import IUser from "../../../models/interfaces/user.interface";
 import { accessTokenService } from "../../../services";
 
 /**
  * @description Logout user by destroying their token
  * @function logoutUserController
  */
-async function logoutUserController(httpRequest: { context: { validated: { user_id: string } } }) {
+async function logoutUserController(httpRequest: { context: { user: IUser } }) {
   const headers = {
     "Content-Type": "application/json",
   };
   try {
-    const { user_id }: { user_id: string } = _.get(httpRequest, "context.validated");
-    const is_logout = await accessTokenService.revoke({ user_id, user_type: UserType.CUSTOMER });
+    const { _id: user_id, type: user_type }: { _id: string; type: string } = _.get(httpRequest, "context.user");
+    const is_logout = await accessTokenService.revoke({ user_id, user_type });
 
     return {
       headers,
