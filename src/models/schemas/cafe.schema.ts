@@ -12,9 +12,15 @@ const cafeSchema = new mongoose.Schema(
       type: { type: String, enum: ["Point"], default: "Point" },
       coordinates: { type: [Number] },
     },
-    // TODO: Change if only there's request to support multiple opening hours
-    open_at: { type: String, required: true }, // Assuming that the cafe opens at same time everyday
-    close_at: { type: String, required: true }, // Assuming that the cafe closes at same time everyday
+    opening_hours: {
+      monday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      tuesday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      wednesday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      thursday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      friday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      saturday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+      sunday: { open_at: { type: String, required: true }, close_at: { type: String, required: true } },
+    },
     credit: { type: Number, default: 0 },
     has_wifi: { type: Boolean, default: false },
     has_charging: { type: Boolean, default: false },
@@ -24,7 +30,7 @@ const cafeSchema = new mongoose.Schema(
       {
         date: { type: String, trim: true, default: null },
         time: [{ type: String, trim: true, default: [] }],
-        seat: { type: Number },
+        seat: [{ type: Number, default: [] }],
       },
     ],
     manager: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

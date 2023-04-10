@@ -8,8 +8,15 @@ export default interface ICafe {
     type: string;
     coordinates: [number, number];
   };
-  open_at: string;
-  close_at: string;
+  opening_hours: {
+    monday: { open_at: string; close_at: string };
+    tuesday: { open_at: string; close_at: string };
+    wednesday: { open_at: string; close_at: string };
+    thursday: { open_at: string; close_at: string };
+    friday: { open_at: string; close_at: string };
+    saturday: { open_at: string; close_at: string };
+    sunday: { open_at: string; close_at: string };
+  };
   credit: number;
   has_wifi: boolean;
   has_charging: boolean;
@@ -18,7 +25,7 @@ export default interface ICafe {
   availability_time_slots: {
     date: string;
     time: string[];
-    seat: number;
+    seat: number[];
   }[];
   manager?: IUser;
   rating?: number;
