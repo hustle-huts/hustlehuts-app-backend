@@ -117,9 +117,12 @@ export default function makeBookingService({
     }
 
     /**
-     * @description This is used by user's API only
-     * @param param0
-     * @param param1
+     * This function finds and returns paginated booking results based on specified query conditions and
+     * sorting criteria.
+     * @returns This function returns a Promise that resolves to a PaginatedBookingResult object or null.
+     * The PaginatedBookingResult object contains an array of existing bookings that match the query
+     * conditions, as well as pagination information such as the current page, total number of pages, and
+     * total number of entries. If no bookings match the query conditions, the function returns null.
      */
     async findAllPaginated(
       {

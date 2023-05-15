@@ -29,7 +29,6 @@ function getAccessControlAllowOrigin(req: Request): string {
   }
 
   if (process.env.ACCESS_CONTROL_ALLOW_ORIGIN) {
-    // return process.env.ACCESS_CONTROL_ALLOW_ORIGIN;
     const access_control_allow_origin_array = process.env.ACCESS_CONTROL_ALLOW_ORIGIN.split(",");
     let first_allowed_origin = "";
     const is_allowed = access_control_allow_origin_array.some((allowed_origin) => {
