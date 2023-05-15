@@ -89,8 +89,73 @@ authRouter.get(
   makeExpressViewCallback(loginUserByProviderController),
 );
 
+/**
+ * @openapi
+ * /api/auth/:
+ *   post:
+ *     description: Register user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               first_name:
+ *                 type: string
+ *                 description: First name of the user.
+ *               last_name:
+ *                 type: string
+ *                 description: Last name of the user.
+ *               email:
+ *                 type: string
+ *                 description: Email of the user.
+ *               password:
+ *                 type: string
+ *                 description: Password of the user, unhashed.
+ *               telegram_handle:
+ *                 type: string
+ *                 description: Telegram handle of the user.
+ *             required:
+ *               - first_name
+ *               - last_name
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Registered successfully.
+ *     tags:
+ *     - /api/auth
+ */
 authRouter.post("/", makeExpressCallback(registerUserController));
 
+/**
+ * @openapi
+ * /api/auth/login:
+ *   post:
+ *     description: Login user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email of the user.
+ *               password:
+ *                 type: string
+ *                 description: Password of the user, unhashed.
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Login successfully.
+ *     tags:
+ *     - /api/auth
+ */
 authRouter.post("/login", makeExpressCallback(loginUserController));
 
 authRouter.post("/logout", authenticateUserJWT(), makeExpressCallback(logoutUserController));
