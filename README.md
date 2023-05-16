@@ -19,6 +19,13 @@ Localhost: http://localhost:3000
 Production: https://hustlehuts-app-backend.onrender.com
 ```
 
+Swagger Documentations:
+
+```
+Localhost: http://localhost:3000/api/swagger
+Production: https://hustlehuts-app-backend.onrender.com/api/swagger
+```
+
 Commits pushed to main will auto deploy to the endpoint above
 
 ## How to call protected routes? (Routes which require bearer token)
