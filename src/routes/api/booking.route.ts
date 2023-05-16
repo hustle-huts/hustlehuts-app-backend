@@ -22,13 +22,16 @@ bookingRouter.post(
   authenticateUserJWT(),
   makeExpressCallback(createBookingController),
 );
+
 bookingRouter.get(
   "/",
   makeValidator(getBookingsPaginatedRules),
   authenticateUserJWT(),
   makeExpressCallback(getBookingsPaginatedController),
 );
+
 bookingRouter.get("/user", authenticateUserJWT(), makeExpressCallback(getBookingsByUserController));
+
 bookingRouter.get(
   "/:booking_id",
   makeValidator(getBookingRules),

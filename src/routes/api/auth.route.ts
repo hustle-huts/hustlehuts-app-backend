@@ -12,6 +12,10 @@ import passport from "passport";
 import makeExpressViewCallback from "../../express-callback/express-view-callback";
 
 const authRouter = express.Router();
+/**
+ * @openapi
+ *    $ref: "../../configs/swagger/schemas/user.yaml"
+ */
 
 /**
  * @openapi
@@ -122,8 +126,22 @@ authRouter.get(
  *               - email
  *               - password
  *     responses:
- *       200:
- *         description: Registered successfully.
+ *       '200':
+ *         description: The registered user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/User'
+ *       '404':
+ *         description: The requested resource was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
  *     tags:
  *     - /api/auth
  */
@@ -151,13 +169,63 @@ authRouter.post("/", makeExpressCallback(registerUserController));
  *               - email
  *               - password
  *     responses:
- *       200:
- *         description: Login successfully.
+ *       '200':
+ *         description: The logged in user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/User'
+ *                login_token:
+ *                  type: string
+ *                  description: The JWT token for the user.
+ *       '404':
+ *         description: The requested resource was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
  *     tags:
  *     - /api/auth
  */
 authRouter.post("/login", makeExpressCallback(loginUserController));
 
+/**
+ * @openapi
+ * /api/auth/logout:
+ *   post:
+ *     security:
+ *        - bearerAuth: []
+ *     description: Logout user
+ *     responses:
+ *       '200':
+ *         description: Whether the user was logged out successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  type: boolean
+ *       '404':
+ *         description: The requested resource was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ *     tags:
+ *     - /api/auth
+ */
 authRouter.post("/logout", authenticateUserJWT(), makeExpressCallback(logoutUserController));
 
 export default authRouter;

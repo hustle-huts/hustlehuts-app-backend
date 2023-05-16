@@ -1,0 +1,44 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          required: true
+        last_name:
+          type: string
+          required: true
+        email:
+          type: string
+          required: true
+          unique: true
+        type:
+          type: string
+          required: true
+          enum: [cafe, customer]
+          default: customer
+        telegram_handle:
+          type: string
+        provider:
+          type: string
+          required: true
+          enum: [email, google, facebook]
+          default: email
+        provider_meta:
+          type: object
+        deleted_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - first_name
+        - last_name
+        - email
+        - type
+        - provider
