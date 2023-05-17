@@ -151,7 +151,7 @@ userRouter.get("/:user_id", authenticateUserJWT(), makeExpressCallback(getUserCo
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UserRequest'
+ *             $ref: '#/components/schemas/UpdateUserRequest'
  *     responses:
  *       '200':
  *         description: The user details were fetched successfully.
