@@ -9,11 +9,13 @@ async function getBookingsPaginatedController(
   httpRequest: Request & {
     context: {
       validated: {
-        user_id?: string;
         cafe_id?: string;
         sort_by?: string;
         page: string;
         entries_per_page?: string;
+      };
+      user: {
+        _id: string;
       };
     };
   },
@@ -24,18 +26,17 @@ async function getBookingsPaginatedController(
 
   try {
     const {
-      user_id,
       cafe_id,
       page = "1",
       entries_per_page = "10",
       sort_by,
     }: {
-      user_id?: string;
       cafe_id?: string;
       page: string;
       entries_per_page?: string;
       sort_by?: string;
     } = _.get(httpRequest, "context.validated");
+    const { _id: user_id }: { _id: string } = _.get(httpRequest, "context.user");
 
     const bookings = await bookingService.findAllPaginated(
       {

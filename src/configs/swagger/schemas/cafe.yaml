@@ -76,3 +76,26 @@ components:
         - address
         - open_at
         - close_at
+    CafeResponse:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Cafe"
+        - type: object
+          properties:
+            _id:
+              type: string
+              pattern: "^[0-9a-fA-F]{24}$"
+              description: Unique identifier for the cafe (ObjectId format)
+      required:
+        - _id
+        - user
+        - cafe
+    CafePaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Cafe"
+        pagination:
+          $ref: "#/components/schemas/Pagination"

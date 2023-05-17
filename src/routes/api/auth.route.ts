@@ -131,7 +131,7 @@ authRouter.get(
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/User'
+ *              $ref: '#/components/schemas/UserResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:
@@ -177,7 +177,7 @@ authRouter.post("/", makeExpressCallback(registerUserController));
  *              type: object
  *              properties:
  *                data:
- *                  $ref: '#/components/schemas/User'
+ *                  $ref: '#/components/schemas/UserResponse'
  *                login_token:
  *                  type: string
  *                  description: The JWT token for the user.

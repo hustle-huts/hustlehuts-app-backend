@@ -14,8 +14,6 @@ const cafeRouter = express.Router();
  * @openapi
  * /api/cafe:
  *   get:
- *     tags:
- *      - /api/cafe
  *     summary: Get cafes paginated
  *     parameters:
  *       - in: query
@@ -71,9 +69,7 @@ const cafeRouter = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Cafe'
+ *              $ref: '#/components/schemas/CafePaginatedResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:
@@ -84,6 +80,18 @@ const cafeRouter = express.Router();
  *                 errors:
  *                   type: string
  *                   description: The error message.
+ *       '422':
+ *         description: Validation error on the request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ *     tags:
+ *      - /api/cafe
  */
 cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(getCafesPaginatedController));
 
@@ -91,8 +99,6 @@ cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(g
  * @openapi
  * /api/cafe/query:
  *   get:
- *     tags:
- *      - /api/cafe
  *     summary: Get cafes by query (non-paginated)
  *     parameters:
  *       - in: query
@@ -138,7 +144,7 @@ cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(g
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Cafe'
+ *                 $ref: '#/components/schemas/CafeResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:
@@ -149,6 +155,18 @@ cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(g
  *                 errors:
  *                   type: string
  *                   description: The error message.
+ *       '422':
+ *         description: Validation error on the request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ *     tags:
+ *      - /api/cafe
  */
 cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallback(getCafesByQueryController));
 
@@ -157,8 +175,6 @@ cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallbac
  * /api/cafe/{cafe_id}:
  *   get:
  *     summary: Get a cafe by ID
- *     tags:
- *       - /api/cafe
  *     parameters:
  *       - in: path
  *         name: cafe_id
@@ -166,15 +182,16 @@ cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallbac
  *         description: ID of the cafe to retrieve
  *         schema:
  *           type: string
+ *           pattern: "^[0-9a-fA-F]{24}$"
  *     responses:
  *       '200':
- *         description: OK
+ *         description: The cafe details.
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/Cafe'
+ *              $ref: '#/components/schemas/CafeResponse'
  *       '404':
- *         description: Cafe not found
+ *         description: Cafe not found.
  *         content:
  *           application/json:
  *             schema:
@@ -182,6 +199,18 @@ cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallbac
  *               properties:
  *                 errors:
  *                   type: string
+ *       '422':
+ *         description: Validation error on the request body.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ *     tags:
+ *      - /api/cafe
  */
 cafeRouter.get("/:cafe_id", makeValidator(getCafeRules), makeExpressCallback(getCafeController));
 

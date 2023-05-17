@@ -1,0 +1,23 @@
+components:
+  schemas:
+    Pagination:
+      type: object
+      properties:
+        current_page:
+          type: number
+        from:
+          anyOf:
+            - type: number
+            - type: null
+        to:
+          anyOf:
+            - type: number
+            - type: null
+        per_page:
+          type: number
+        total:
+          type: number
+        total_pages:
+          type: number
+      required:
+        - pagination

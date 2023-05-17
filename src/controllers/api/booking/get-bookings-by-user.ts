@@ -8,8 +8,8 @@ import { bookingService } from "../../../services";
 async function getBookingsByUserController(
   httpRequest: Request & {
     context: {
-      validated: {
-        user_id: string;
+      user: {
+        _id: string;
       };
     };
   },
@@ -19,7 +19,7 @@ async function getBookingsByUserController(
   };
 
   try {
-    const { user_id }: { user_id: string } = _.get(httpRequest, "context.validated");
+    const { _id: user_id }: { _id: string } = _.get(httpRequest, "context.user");
     const bookings = await bookingService.findAllByUser({ user_id });
 
     return {

@@ -5,9 +5,11 @@ components:
       properties:
         user:
           type: string
+          pattern: "^[0-9a-fA-F]{24}$"
           description: Reference to the User
         cafe:
           type: string
+          pattern: "^[0-9a-fA-F]{24}$"
           description: Reference to the Cafe
         slots:
           type: array
@@ -38,3 +40,61 @@ components:
       required:
         - user
         - cafe
+    BookingResponse:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Booking"
+        - type: object
+          properties:
+            _id:
+              type: string
+              pattern: "^[0-9a-fA-F]{24}$"
+              description: Unique identifier for the booking (ObjectId format)
+      required:
+        - _id
+        - user
+        - cafe
+    BookingPaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Booking"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+    CreateBookingRequest:
+      type: object
+      properties:
+        cafe:
+          type: string
+          description: Reference to the Cafe
+        slots:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                trim: true
+                default: null
+              time:
+                type: array
+                items:
+                  type: string
+                  trim: true
+                default: []
+              seat:
+                type: number
+        deleted_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - cafe
+        - slots
