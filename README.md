@@ -15,14 +15,14 @@ yarn dev
 Endpoints:
 
 ```
-Localhost: http://localhost:3000
+Localhost: http://localhost:5001
 Production: https://hustlehuts-app-backend.onrender.com
 ```
 
 Swagger Documentations:
 
 ```
-Localhost: http://localhost:3000/api/swagger
+Localhost: http://localhost:5001/api/swagger
 Production: https://hustlehuts-app-backend.onrender.com/api/swagger
 ```
 
