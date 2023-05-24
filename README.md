@@ -14,17 +14,13 @@ yarn dev
 
 Endpoints:
 
-```
-Localhost: http://localhost:5001
-Production: https://hustlehuts-app-backend.onrender.com
-```
+- Localhost: http://localhost:3001
+- Production: https://hustlehuts-app-backend.onrender.com
 
 Swagger Documentations:
 
-```
-Localhost: http://localhost:5001/api/swagger
-Production: https://hustlehuts-app-backend.onrender.com/api/swagger
-```
+- Localhost: http://localhost:3001/api/swagger
+- Production: https://hustlehuts-app-backend.onrender.com/api/swagger
 
 Commits pushed to main will auto deploy to the endpoint above
 
@@ -40,6 +36,6 @@ Save the token into either localStorage or sessionStorage on the frontend.
 You will need to set your API call header with the token. The following example is based on Axios:
 
 ```
-    config.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
-    config.headers.common["token-type"] = "bearer";
+config.headers.common["Authorization"] = `Bearer ${localStorage.getItem("access_token")}`;
+config.headers.common["token-type"] = "bearer";
 ```
