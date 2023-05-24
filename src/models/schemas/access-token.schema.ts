@@ -7,8 +7,8 @@ const accessTokenSchema = new mongoose.Schema(
     user_type: {
       type: String,
       required: true,
-      default: "user",
-      enum: ["user", "admin"],
+      default: "customer",
+      enum: ["customer", "cafe", "admin"],
     },
     revoked: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },

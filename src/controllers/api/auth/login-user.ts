@@ -20,7 +20,6 @@ async function loginUserController(
   try {
     const { email, password }: { email: string; password: string } = _.get(httpRequest, "context.validated");
     const user_exists = await userService.findByEmail({ email });
-
     if (!user_exists) {
       throw new Error(`User does not exist`);
     }

@@ -39,7 +39,7 @@ makeDb().then(async () => {
     await createSampleData();
   }
 });
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
