@@ -17,7 +17,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
      */
     async insert(payload: Partial<IUser>): Promise<IUser | null> {
       const result = await userDbModel.create([payload]);
-      const updated = await userDbModel.findOne({ _id: result[0]?._id });
+      const updated = await userDbModel.findOne({ _id: result[0]?._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }

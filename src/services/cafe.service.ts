@@ -19,7 +19,7 @@ export default function makeCafeService({ cafeDbModel }: { cafeDbModel: mongoose
      */
     async insert(payload: Partial<ICafe>): Promise<ICafe | null> {
       const result = await cafeDbModel.create([payload]);
-      const updated = await cafeDbModel.findOne({ _id: result[0]?._id });
+      const updated = await cafeDbModel.findOne({ _id: result[0]?._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }

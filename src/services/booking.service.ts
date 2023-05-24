@@ -22,7 +22,7 @@ export default function makeBookingService({
      */
     async insert(payload: Partial<IBooking>): Promise<IBooking | null> {
       const result = await bookingDbModel.create([payload]);
-      const updated = await bookingDbModel.findOne({ _id: result[0]?._id });
+      const updated = await bookingDbModel.findOne({ _id: result[0]?._id }).lean({ virtuals: true });
       if (updated) {
         return updated;
       }
