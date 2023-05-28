@@ -178,7 +178,7 @@ authRouter.post("/", makeExpressCallback(registerUserController));
  *              properties:
  *                data:
  *                  $ref: '#/components/schemas/UserResponse'
- *                login_token:
+ *                access_token:
  *                  type: string
  *                  description: The JWT token for the user.
  *       '404':

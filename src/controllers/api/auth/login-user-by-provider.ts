@@ -22,17 +22,17 @@ async function loginUserByProviderController(httpRequest: Request & { context: {
     }
 
     const user_id = _.get(user_exists, "_id");
-    let login_token = await accessTokenService.findValidToken({ user_id });
-    if (!login_token) {
+    let access_token = await accessTokenService.findValidToken({ user_id });
+    if (!access_token) {
       logger.verbose(`User has no valid token, creating one now...`);
-      login_token = generateJWTToken({ user_id, user_type: user_exists.type }, { expiresIn: "1y" });
+      access_token = generateJWTToken({ user_id, user_type: user_exists.type }, { expiresIn: "1y" });
       await accessTokenService.insert({
         user_id: user_id,
-        token: login_token,
+        token: access_token,
       });
     }
 
-    const data = { access_token: login_token, user: user_exists };
+    const data = { access_token: access_token, user: user_exists };
     const data_string = JSON.stringify(data);
     return {
       headers,
@@ -50,11 +50,11 @@ async function loginUserByProviderController(httpRequest: Request & { context: {
                     window.close();
                   }else if(window.ReactNativeWebView){
                     // To close webview in native app
-                    window.ReactNativeWebView.postMessage('${login_token}', '*');
+                    window.ReactNativeWebView.postMessage('${access_token}', '*');
                   }else{
                     // For linkedin app that uses same window to do authentication
                     window.open(
-                      '${process.env.FRONTEND_URL}/login?t=${login_token}',
+                      '${process.env.FRONTEND_URL}/login?t=${access_token}',
                       '_self'
                     );
                   }

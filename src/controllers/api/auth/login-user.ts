@@ -33,18 +33,18 @@ async function loginUserController(
       throw new Error(`Incorrect password`);
     }
 
-    let login_token = await accessTokenService.findValidToken({
+    let access_token = await accessTokenService.findValidToken({
       user_id: user_exists._id,
       user_type: user_exists.type,
     });
 
-    if (!login_token) {
+    if (!access_token) {
       logger.verbose(`User has no valid token, creating one now...`);
-      login_token = generateJWTToken({ user_id: user_exists._id, user_type: user_exists.type }, { expiresIn: "1y" });
+      access_token = generateJWTToken({ user_id: user_exists._id, user_type: user_exists.type }, { expiresIn: "1y" });
       await accessTokenService.insert({
         user_id: user_exists._id,
         user_type: user_exists.type,
-        token: login_token,
+        token: access_token,
       });
     }
 
@@ -53,7 +53,7 @@ async function loginUserController(
       statusCode: 200,
       body: {
         data: omit(user_exists, ["hash_password"]),
-        login_token,
+        access_token,
       },
     };
   } catch (err: any) {
