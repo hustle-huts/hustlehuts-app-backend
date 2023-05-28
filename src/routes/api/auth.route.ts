@@ -5,9 +5,10 @@ import {
   loginUserController,
   logoutUserController,
   loginUserByProviderController,
+  authUserController,
 } from "../../controllers/api/auth";
 
-import authenticateUserJWT from "../../middlewares/authenticate-user.middlware";
+import authenticateUserMiddleware from "../../middlewares/authenticate-user.middlware";
 import passport from "passport";
 import makeExpressViewCallback from "../../express-callback/express-view-callback";
 
@@ -21,6 +22,7 @@ const authRouter = express.Router();
  * @openapi
  * /api/auth/google:
  *   get:
+ *     summary: Authenticate google user
  *     description: Authenticate google user
  *     responses:
  *       200:
@@ -45,6 +47,7 @@ authRouter.get(
  * @openapi
  * /api/auth/google/callback:
  *   get:
+ *     summary: Google callback route
  *     description: Google callback route
  *     responses:
  *       200:
@@ -92,6 +95,33 @@ authRouter.get(
   passport.authenticate("facebook"),
   makeExpressViewCallback(loginUserByProviderController),
 );
+
+/**
+ * @openapi
+ * /api/auth/auth:
+ *   get:
+ *     description: Get user information by access token.
+ *     responses:
+ *       '200':
+ *         description: The registered user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *              $ref: '#/components/schemas/UserResponse'
+ *       '404':
+ *         description: The requested resource was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 errors:
+ *                   type: string
+ *                   description: The error message.
+ *     tags:
+ *     - /api/auth
+ */
+authRouter.get("/auth", makeExpressCallback(authUserController));
 
 /**
  * @openapi
@@ -226,6 +256,6 @@ authRouter.post("/login", makeExpressCallback(loginUserController));
  *     tags:
  *     - /api/auth
  */
-authRouter.post("/logout", authenticateUserJWT(), makeExpressCallback(logoutUserController));
+authRouter.post("/logout", authenticateUserMiddleware, makeExpressCallback(logoutUserController));
 
 export default authRouter;

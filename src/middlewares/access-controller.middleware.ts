@@ -19,7 +19,7 @@ function getAccessControlAllowOrigin(req: Request): string {
     "https://app.hustlehuts.com",
     "https://hustlehuts.com",
     "https://admin.hustlehuts.com",
-    "http://localhost:8082",
+    "http://localhost:3000",
   ];
   const origin = String(_.get(req, "headers.origin"));
   const is_allowed = allowed_origins.includes(origin);

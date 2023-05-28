@@ -10,7 +10,7 @@ import { userService, accessTokenService } from "../../../services";
  * @description Check user's email and password and return login message if successful
  * @function loginUserController
  */
-async function loginUserController(
+export async function loginUserController(
   httpRequest: Request & { context: { validated: { email: string; password: string } } },
 ) {
   const headers = {
@@ -20,6 +20,7 @@ async function loginUserController(
   try {
     const { email, password }: { email: string; password: string } = _.get(httpRequest, "context.validated");
     const user_exists = await userService.findByEmail({ email });
+    console.log(user_exists);
     if (!user_exists) {
       throw new Error(`User does not exist`);
     }
@@ -66,5 +67,3 @@ async function loginUserController(
     };
   }
 }
-
-export default loginUserController;

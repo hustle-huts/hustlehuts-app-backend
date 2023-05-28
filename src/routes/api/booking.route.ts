@@ -12,7 +12,7 @@ import {
   getBookingsByUserController,
   getBookingsPaginatedController,
 } from "../../controllers/api/booking";
-import authenticateUserJWT from "../../middlewares/authenticate-user.middlware";
+import authenticateUserMiddleware from "../../middlewares/authenticate-user.middlware";
 
 const bookingRouter = express.Router();
 /**
@@ -76,7 +76,7 @@ const bookingRouter = express.Router();
 bookingRouter.post(
   "/",
   makeValidator(createBookingRules),
-  authenticateUserJWT(),
+  authenticateUserMiddleware,
   makeExpressCallback(createBookingController),
 );
 
@@ -156,7 +156,7 @@ bookingRouter.post(
 bookingRouter.get(
   "/",
   makeValidator(getBookingsPaginatedRules),
-  authenticateUserJWT(),
+  authenticateUserMiddleware,
   makeExpressCallback(getBookingsPaginatedController),
 );
 
@@ -209,7 +209,7 @@ bookingRouter.get(
  *     tags:
  *     - /api/booking
  */
-bookingRouter.get("/user", authenticateUserJWT(), makeExpressCallback(getBookingsByUserController));
+bookingRouter.get("/user", authenticateUserMiddleware, makeExpressCallback(getBookingsByUserController));
 
 /**
  * @openapi
@@ -248,7 +248,7 @@ bookingRouter.get("/user", authenticateUserJWT(), makeExpressCallback(getBooking
 bookingRouter.get(
   "/:booking_id",
   makeValidator(getBookingRules),
-  authenticateUserJWT(),
+  authenticateUserMiddleware,
   makeExpressCallback(getBookingController),
 );
 

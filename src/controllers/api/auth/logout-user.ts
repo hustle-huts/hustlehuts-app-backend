@@ -6,7 +6,7 @@ import { accessTokenService } from "../../../services";
  * @description Logout user by destroying their token
  * @function logoutUserController
  */
-async function logoutUserController(httpRequest: { context: { user: IUser } }) {
+export async function logoutUserController(httpRequest: { context: { user: IUser } }) {
   const headers = {
     "Content-Type": "application/json",
   };
@@ -31,5 +31,3 @@ async function logoutUserController(httpRequest: { context: { user: IUser } }) {
     };
   }
 }
-
-export default logoutUserController;

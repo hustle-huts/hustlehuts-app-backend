@@ -8,7 +8,7 @@ import { userService, accessTokenService } from "../../../services";
  * @description Login user by provider (e.g. Google, Facebook)
  * @function loginUserByProviderController
  */
-async function loginUserByProviderController(httpRequest: Request & { context: { user: Express.User } }) {
+export async function loginUserByProviderController(httpRequest: Request & { context: { user: Express.User } }) {
   const headers = {
     "Content-Type": "application/json",
   };
@@ -83,5 +83,3 @@ async function loginUserByProviderController(httpRequest: Request & { context: {
     };
   }
 }
-
-export default loginUserByProviderController;

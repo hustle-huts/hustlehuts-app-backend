@@ -2,48 +2,9 @@ import express from "express";
 import makeExpressCallback from "../../express-callback";
 import { getUserController, updateUserController, getUserByEmailController } from "../../controllers/api/user";
 
-import authenticateUserJWT from "../../middlewares/authenticate-user.middlware";
+import authenticateUserMiddleware from "../../middlewares/authenticate-user.middlware";
 
 const userRouter = express.Router();
-
-/**
- * @openapi
- * /api/user/auth:
- *   get:
- *     security:
- *        - bearerAuth: []
- *     description: Get user details by JWT token
- *     responses:
- *       '200':
- *         description: The user details were fetched successfully.
- *         content:
- *           application/json:
- *             schema:
- *              $ref: '#/components/schemas/UserResponse'
- *       '401':
- *         description: Unauthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: string
- *                   description: The error message.
- *       '404':
- *         description: The requested resource was not found.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 errors:
- *                   type: string
- *                   description: The error message.
- *     tags:
- *     - /api/user
- */
-userRouter.get("/auth", authenticateUserJWT(), makeExpressCallback(getUserController));
 
 /**
  * @openapi
@@ -90,7 +51,7 @@ userRouter.get("/auth", authenticateUserJWT(), makeExpressCallback(getUserContro
  *     tags:
  *     - /api/user
  */
-userRouter.get("/email/:email", authenticateUserJWT(), makeExpressCallback(getUserByEmailController));
+userRouter.get("/email/:email", authenticateUserMiddleware, makeExpressCallback(getUserByEmailController));
 
 /**
  * @openapi
@@ -137,7 +98,7 @@ userRouter.get("/email/:email", authenticateUserJWT(), makeExpressCallback(getUs
  *     tags:
  *     - /api/user
  */
-userRouter.get("/:user_id", authenticateUserJWT(), makeExpressCallback(getUserController));
+userRouter.get("/:user_id", authenticateUserMiddleware, makeExpressCallback(getUserController));
 
 /**
  * @openapi
@@ -182,6 +143,6 @@ userRouter.get("/:user_id", authenticateUserJWT(), makeExpressCallback(getUserCo
  *     tags:
  *     - /api/user
  */
-userRouter.put("/", authenticateUserJWT(), makeExpressCallback(updateUserController));
+userRouter.put("/", authenticateUserMiddleware, makeExpressCallback(updateUserController));
 
 export default userRouter;
