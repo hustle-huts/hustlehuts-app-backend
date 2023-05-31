@@ -20,9 +20,8 @@ export async function loginUserController(
   try {
     const { email, password }: { email: string; password: string } = _.get(httpRequest, "context.validated");
     const user_exists = await userService.findByEmail({ email });
-    console.log(user_exists);
     if (!user_exists) {
-      throw new Error(`User does not exist`);
+      throw new Error(`User with email ${email} does not exist!`);
     }
 
     const is_valid_password = await verifyPassword({
@@ -31,7 +30,7 @@ export async function loginUserController(
     });
 
     if (!is_valid_password) {
-      throw new Error(`Incorrect password`);
+      throw new Error(`Incorrect password. Please try again!`);
     }
 
     let access_token = await accessTokenService.findValidToken({
