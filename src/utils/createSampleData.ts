@@ -6,8 +6,8 @@ export async function createSampleData() {
     {
       name: "Plain Vanilla",
       address: "167 Neil Rd Singapore 088888",
-      open_at: "07:30",
-      close_at: "19:00",
+      open_at: ["07:30", "07:30", "07:30", "07:30", "07:30", "07:30", "07:30"],
+      close_at: ["19:00", "19:00", "19:00", "19:00", "19:00", "19:00", "19:00",],
       credit: 1,
       has_wifi: true,
       has_charging: true,
@@ -18,15 +18,15 @@ export async function createSampleData() {
         {
           date: "2023-04-05",
           time: ["08:00", "09:00", "10:00"],
-          seat: 10,
+          seat: [5, 6, 7],
         },
       ],
     },
     {
       name: "Tag Expresso",
       address: "391 Orchard Rd, #02 - 11, Tower B, Singapore 238872",
-      open_at: "08:00",
-      close_at: "20:00",
+      open_at: ["08:00", "08:00", "08:00", "08:00", "08:00", "08:00", "08:00"],
+      close_at: ["20:00", "20:00", "20:00", "20:00", "20:00", "20:00", "20:00"],
       credit: 1,
       has_wifi: false,
       has_charging: true,
@@ -37,7 +37,7 @@ export async function createSampleData() {
         {
           date: "2023-04-05",
           time: ["08:00", "09:00", "10:00"],
-          seat: 10,
+          seat: [7, 8, 9],
         },
       ],
     },
