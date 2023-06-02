@@ -12,7 +12,7 @@ export async function logoutUserController(httpRequest: { context: { user: IUser
   };
   try {
     const { _id: user_id, type: user_type }: { _id: string; type: string } = _.get(httpRequest, "context.user");
-    const is_logout = await accessTokenService.revoke({ user_id, user_type });
+    const is_logout = await accessTokenService.delete({ user_id, user_type });
 
     return {
       headers,

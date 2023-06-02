@@ -10,7 +10,6 @@ const accessTokenSchema = new mongoose.Schema(
       default: "customer",
       enum: ["customer", "cafe", "admin"],
     },
-    revoked: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
   },

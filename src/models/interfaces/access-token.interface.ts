@@ -1,8 +1,14 @@
+import { UserType } from "./user.interface";
+
+export enum AccessTokenType {
+  LOGIN = "login",
+}
+
 export default interface IAccessToken {
   token: string;
-  revoked: boolean;
+  type?: AccessTokenType;
   user_id?: string;
-  user_type?: string;
+  user_type?: UserType;
   created_at?: Date;
   updated_at?: Date;
 }

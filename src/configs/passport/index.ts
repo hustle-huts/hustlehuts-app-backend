@@ -4,7 +4,7 @@ import initializeJWT from "./jwt";
 import initializeGoogle from "./google";
 import initializeFacebook from "./facebook";
 
-const secretOrKey = process.env.AUTH_SECRET || "auth_secret";
+const secretOrKey = process.env.JWT_SECRET || "AUTH_SECRET";
 
 initializeJWT(passport, secretOrKey);
 initializeGoogle({ passport, logger });

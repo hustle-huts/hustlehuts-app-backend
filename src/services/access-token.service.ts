@@ -14,53 +14,38 @@ export default function makeAccessTokenDb({
     async findAll(): Promise<IAccessToken[]> {
       const existing = await accessTokenDbModel.find().lean({ virtuals: true });
       if (existing) {
-        return existing.map((accessToken) => {
-          return {
-            token: accessToken.token,
-            revoked: accessToken.revoked,
-          };
-        });
+        return existing.map((accessToken) => ({
+          token: accessToken.token,
+        }));
       }
-
       return existing;
     }
 
     /**
-     * "Finds an access token by user id, user type, and whether or not it's revoked."
+     * "Finds an access token by user id, user type, and whether or not it's deleted."
      *
      * The function is async, so it returns a promise. The promise resolves to an object that implements
      * the IAccessToken interface
      * @param  - `user_id` - the user id of the user who is requesting the access token
-     * @returns An object with the token and revoked properties.
+     * @returns An object with the token and deleted properties.
      */
-    async findOne({
-      user_id,
-      user_type,
-      revoked,
-    }: {
-      user_id: string;
-      user_type?: string;
-      revoked: boolean;
-    }): Promise<IAccessToken | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked }).lean({ virtuals: true });
+    async findOne({ user_id, user_type }: { user_id: string; user_type?: string }): Promise<IAccessToken | null> {
+      const existing = await accessTokenDbModel.findOne({ user_id, user_type }).lean({ virtuals: true });
       if (existing) {
-        return {
-          token: existing.token,
-          revoked: existing.revoked,
-        };
+        return { token: existing.token };
       }
       return existing;
     }
 
     /**
-     * "Find the user_id associated with the given token, if it exists and is not revoked."
+     * "Find the user_id associated with the given token, if it exists and is not deleted."
      *
      * The function is async, so it returns a Promise. The Promise resolves to a string or undefined
      * @param  - `token`: The access token to find the user ID for.
      * @returns The user_id of the user who is logged in.
      */
     async findUserId({ token }: { token: string }): Promise<string | undefined> {
-      const existing = await accessTokenDbModel.findOne({ token, revoked: false }).lean({ virtuals: true });
+      const existing = await accessTokenDbModel.findOne({ token }).lean({ virtuals: true });
       if (existing) {
         return existing.user_id;
       }
@@ -76,9 +61,7 @@ export default function makeAccessTokenDb({
      * @returns The token is being returned.
      */
     async findValidToken({ user_id, user_type }: { user_id: string; user_type?: string }): Promise<string | null> {
-      const existing = await accessTokenDbModel
-        .findOne({ user_id, user_type, revoked: false })
-        .lean({ virtuals: true });
+      const existing = await accessTokenDbModel.findOne({ user_id, user_type }).lean({ virtuals: true });
       if (existing) {
         return existing.token;
       }
@@ -100,34 +83,27 @@ export default function makeAccessTokenDb({
     }
 
     /**
-     * It finds an access token that matches the given token and that is not revoked, and then it revokes
+     * It finds an access token that matches the given token and that is not deleted, and then it deletes
      * it
-     * @param  - `token`: The token to revoke.
+     * @param  - `token`: The token to delete.
      * @param options - { session: null }
-     * @returns The token that was revoked.
+     * @returns The token that was deleted.
      */
-    async revokeByToken(
-      {
-        token,
-      }: {
-        token: string;
-      },
-      options = { session: null },
-    ): Promise<string | null> {
+    async deleteByToken({ token }: { token: string }, options = { session: null }): Promise<string | null> {
       const result = await accessTokenDbModel
-        .findOneAndUpdate({ token, revoked: false }, { revoked: true, updated_at: new Date() })
+        .findOneAndDelete({ token })
         .session(options.session)
         .lean({ virtuals: true });
       return result && result.token;
     }
 
     /**
-     * It revokes an access token by setting the `revoked` field to `true`
-     * @param  - `user_id`: The user id of the user to revoke the token for.
+     * It deletes an access token by setting the `deleted` field to `true`
+     * @param  - `user_id`: The user id of the user to delete the token for.
      * @param options - {
      * @returns The result of the update operation.
      */
-    async revoke(
+    async delete(
       {
         user_id,
         user_type,
@@ -138,27 +114,27 @@ export default function makeAccessTokenDb({
       options = { session: null },
     ): Promise<boolean | null> {
       const result = await accessTokenDbModel
-        .findOneAndUpdate({ user_id, user_type, revoked: false }, { revoked: true, updated_at: new Date() })
+        .findOneAndDelete({ user_id, user_type })
         .session(options.session)
         .lean({ virtuals: true });
       return !!result && !!result.token;
     }
 
     /**
-     * "This function revokes all access tokens for a given user id."
+     * "This function deletes all access tokens for a given user id."
      *
      * The function takes two parameters:
      *
-     * 1. `user_id`: The user id of the user whose access tokens we want to revoke.
+     * 1. `user_id`: The user id of the user whose access tokens we want to delete.
      * 2. `options`: An object that contains the MongoDB session object
-     * @param  - `user_id`: The user id of the user whose access tokens are to be revoked.
+     * @param  - `user_id`: The user id of the user whose access tokens are to be deleted.
      * @param options - {
      * @returns The return value is a boolean value.
      */
-    async revokeAllByUserId({ user_id }: { user_id: string }, options = { session: null }): Promise<boolean> {
-      const query_conditions = { user_id, revoked: false };
+    async deleteAllByUserId({ user_id }: { user_id: string }, options = { session: null }): Promise<boolean> {
+      const query_conditions = { user_id };
       const updated = await accessTokenDbModel
-        .updateMany(query_conditions, { revoked: true })
+        .deleteMany(query_conditions)
         .session(options.session)
         .lean({ virtuals: true });
       return updated.acknowledged;

@@ -1,6 +1,7 @@
 import password_jwt from "passport-jwt";
 import { PassportStatic } from "passport";
 import { userService, accessTokenService } from "../../services";
+import { UserType } from "../../models/interfaces/user.interface";
 
 export default function initializeJWT(passport: PassportStatic, secretOrKey: string): PassportStatic {
   const JwtStrategy = password_jwt.Strategy,
@@ -17,23 +18,21 @@ export default function initializeJWT(passport: PassportStatic, secretOrKey: str
   passport.use(
     "user-jwt",
     new JwtStrategy(opts, async function (jwt_payload, done) {
-      const exist = await userService.findByEmail({ email: jwt_payload.email, type: jwt_payload.user_type });
-      if (!exist) {
+      const user_exists = await userService.findById({ id: jwt_payload.user_id });
+      if (!user_exists) {
         return done(undefined, undefined);
       }
 
       const valid = await accessTokenService.findOne({
-        user_id: exist._id,
-        user_type: "user",
-        revoked: false,
+        user_id: user_exists._id,
+        user_type: UserType.CUSTOMER,
       });
 
       if (!valid) {
         return done(undefined, undefined);
       }
 
-      Object.assign(exist, { token_type: jwt_payload.type });
-      return done(undefined, exist);
+      return done(undefined, user_exists);
     }),
   );
 
