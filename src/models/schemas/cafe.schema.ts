@@ -12,9 +12,8 @@ const cafeSchema = new mongoose.Schema(
       type: { type: String, enum: ["Point"], default: "Point" },
       coordinates: { type: [Number] },
     },
-    // TODO: Change if only there's request to support multiple opening hours
-    open_at: { type: String, required: true }, // Assuming that the cafe opens at same time everyday
-    close_at: { type: String, required: true }, // Assuming that the cafe closes at same time everyday
+    open_at: [{ type: String, required: true }], 
+    close_at: [{ type: String, required: true }],
     credit: { type: Number, default: 0 },
     has_wifi: { type: Boolean, default: false },
     has_charging: { type: Boolean, default: false },
@@ -24,7 +23,7 @@ const cafeSchema = new mongoose.Schema(
       {
         date: { type: String, trim: true, default: null },
         time: [{ type: String, trim: true, default: [] }],
-        seat: { type: Number },
+        seat: [{ type: Number }],
       },
     ],
     manager: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -56,7 +55,6 @@ cafeSchema.pre("save", async function () {
     if (!res) {
       throw Error("Unable to geocode address");
     }
-
     const longitude: number = _.get(res, "longitude", 0);
     const latitude: number = _.get(res, "latitude", 0);
     // Update the cafe's location field with the latitude and longitude
@@ -73,11 +71,20 @@ cafeSchema.pre("save", async function () {
 cafeSchema.virtual("is_open").get(function () {
   const open_at = _.get(this, "open_at");
   const close_at = _.get(this, "close_at");
-  const open_at_moment = moment.tz(open_at, "HH:mm", "Asia/Singapore");
-  const close_at_moment = moment.tz(close_at, "HH:mm", "Asia/Singapore");
   const now = moment.tz("Asia/Singapore");
-  return now.isBetween(close_at_moment, open_at_moment);
+  const currentDayIndex = now.isoWeekday() - 1; // Get the current day index (0 for Monday, 1 for Tuesday, etc.)
+
+  // Check if the current time is within the opening and closing time for the current day
+  const open_at_moment = moment.tz(open_at[currentDayIndex], "HH:mm", "Asia/Singapore");
+  const close_at_moment = moment.tz(close_at[currentDayIndex], "HH:mm", "Asia/Singapore");
+
+  if (now.isBetween(open_at_moment, close_at_moment)) {
+    return true; // Cafe is open
+  }
+
+  return false; // Cafe is closed
 });
+
 
 cafeSchema.index({ location: "2dsphere" });
 
