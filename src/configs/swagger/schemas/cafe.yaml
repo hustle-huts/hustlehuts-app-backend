@@ -21,10 +21,16 @@ components:
               items:
                 type: number
         open_at:
-          type: string
+          type: array
+          items:
+            type: string
+            trim: true
           required: true
         close_at:
-          type: string
+          type: array
+          items:
+            type: string
+            trim: true
           required: true
         credit:
           type: number
@@ -48,14 +54,16 @@ components:
               date:
                 type: string
                 trim: true
-                default: null
               time:
                 type: array
                 items:
                   type: string
                   trim: true
               seat:
-                type: number
+                type: array
+                items:
+                  type: number
+                  trim: true
         manager:
           type: string
           format: uuid
