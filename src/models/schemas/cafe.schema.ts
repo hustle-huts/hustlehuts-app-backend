@@ -12,7 +12,7 @@ const cafeSchema = new mongoose.Schema(
       type: { type: String, enum: ["Point"], default: "Point" },
       coordinates: { type: [Number] },
     },
-    open_at: [{ type: String, required: true }], 
+    open_at: [{ type: String, required: true }],
     close_at: [{ type: String, required: true }],
     credit: { type: Number, default: 0 },
     has_wifi: { type: Boolean, default: false },
@@ -21,7 +21,7 @@ const cafeSchema = new mongoose.Schema(
     image_url: { type: String },
     availability_time_slots: [
       {
-        date: { type: String, trim: true, default: null },
+        date: { type: String, trim: true, default: null }, // dd-mm-yyyy format
         time: [{ type: String, trim: true, default: [] }],
         seat: [{ type: Number }],
       },
@@ -84,7 +84,6 @@ cafeSchema.virtual("is_open").get(function () {
 
   return false; // Cafe is closed
 });
-
 
 cafeSchema.index({ location: "2dsphere" });
 
