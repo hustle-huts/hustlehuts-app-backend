@@ -100,6 +100,8 @@ authRouter.get(
  * @openapi
  * /api/auth/auth:
  *   get:
+ *     security:
+ *        - bearerAuth: []
  *     description: Get user information by access token.
  *     responses:
  *       '200':
@@ -121,7 +123,7 @@ authRouter.get(
  *     tags:
  *     - /api/auth
  */
-authRouter.get("/auth", makeExpressCallback(authUserController));
+authRouter.get("/auth", authenticateUserMiddleware, makeExpressCallback(authUserController));
 
 /**
  * @openapi
