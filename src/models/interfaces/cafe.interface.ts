@@ -19,6 +19,7 @@ export default interface ICafe {
     date: string;
     time: string[];
     seat: number[];
+    available_seat?: number[];
   }[];
   manager?: IUser;
   rating?: number;

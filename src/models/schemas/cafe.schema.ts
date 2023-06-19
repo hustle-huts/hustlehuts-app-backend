@@ -24,6 +24,7 @@ const cafeSchema = new mongoose.Schema(
         date: { type: String, trim: true, default: null }, // dd-mm-yyyy format
         time: [{ type: String, trim: true, default: [] }],
         seat: [{ type: Number }],
+        available_seat: [{ type: Number }],
       },
     ],
     manager: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
