@@ -39,7 +39,10 @@ const bookingRouter = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/Booking'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/BookingResponse'
  *       '401':
  *         description: Unauthorized
  *         content:
@@ -166,16 +169,19 @@ bookingRouter.get(
  *   get:
  *     security:
  *        - bearerAuth: []
- *     description: Retrieve all bookings made by user (non-paginated)
+ *     description: Retrieve all bookings made by the user (non-paginated)
  *     responses:
  *       '200':
- *         description: The booking details.
+ *         description: The bookings made by the user.
  *         content:
  *           application/json:
  *             schema:
- *              type: array
- *              items:
- *               $ref: '#/components/schemas/BookingResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/BookingResponse'
  *       '401':
  *         description: Unauthorized
  *         content:
@@ -231,7 +237,10 @@ bookingRouter.get("/user", authenticateUserMiddleware, makeExpressCallback(getBo
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/BookingResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/BookingResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:

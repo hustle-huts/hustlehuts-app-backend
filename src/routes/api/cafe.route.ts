@@ -142,9 +142,12 @@ cafeRouter.get("/", makeValidator(getCafesPaginatedRules), makeExpressCallback(g
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/CafeResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/CafeResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:
@@ -189,7 +192,10 @@ cafeRouter.get("/query", makeValidator(getCafesByQueryRules), makeExpressCallbac
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/CafeResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/CafeResponse'
  *       '404':
  *         description: Cafe not found.
  *         content:

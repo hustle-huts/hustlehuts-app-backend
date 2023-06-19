@@ -109,7 +109,10 @@ authRouter.get(
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/UserResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:
@@ -163,7 +166,10 @@ authRouter.get("/auth", authenticateUserMiddleware, makeExpressCallback(authUser
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/UserResponse'
  *       '404':
  *         description: The requested resource was not found.
  *         content:

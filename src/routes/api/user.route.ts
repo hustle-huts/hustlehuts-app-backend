@@ -27,7 +27,10 @@ const userRouter = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/UserResponse'
  *       '401':
  *         description: Unauthorized
  *         content:
@@ -74,7 +77,10 @@ userRouter.get("/email/:email", authenticateUserMiddleware, makeExpressCallback(
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/UserResponse'
  *       '401':
  *         description: Unauthorized
  *         content:
@@ -115,11 +121,14 @@ userRouter.get("/:user_id", authenticateUserMiddleware, makeExpressCallback(getU
  *             $ref: '#/components/schemas/UpdateUserRequest'
  *     responses:
  *       '200':
- *         description: The user details were fetched successfully.
+ *         description: The user details were updated successfully.
  *         content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/UserResponse'
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/UserResponse'
  *       '401':
  *         description: Unauthorized
  *         content:
