@@ -7,9 +7,10 @@
 import mongoose from "mongoose";
 
 import IUser, { UserType } from "../models/interfaces/user.interface";
+import { IUserService } from "./interfaces/user";
 
 export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
-  return new (class MongooseUserDb {
+  return new (class MongooseUserDb implements IUserService {
     /**
      * It inserts a user into the database.
      * @param payload - This is the payload that will be inserted into the database.

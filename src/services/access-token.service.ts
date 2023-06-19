@@ -1,12 +1,14 @@
 import mongoose from "mongoose";
+
 import IAccessToken from "../models/interfaces/access-token.interface";
+import { IAccessTokenService } from "./interfaces/access-token";
 
 export default function makeAccessTokenDb({
   accessTokenDbModel,
 }: {
   accessTokenDbModel: mongoose.Model<IAccessToken & mongoose.Document>;
 }) {
-  return new (class MongooseAccessTokenDb {
+  return new (class MongooseAccessTokenDb implements IAccessTokenService {
     /**
      * It returns a list of all the access tokens in the database
      * @returns An array of access tokens.
@@ -40,7 +42,7 @@ export default function makeAccessTokenDb({
     /**
      * "Find the user_id associated with the given token, if it exists and is not deleted."
      *
-     * The function is async, so it returns a Promise. The Promise resolves to a string or undefined
+     * The function is async, so it returns a Promise. The Promise resolves to a string or null
      * @param  - `token`: The access token to find the user ID for.
      * @returns The user_id of the user who is logged in.
      */
